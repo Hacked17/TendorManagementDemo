@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>M2 — Registration Information</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+  <style>
+    :root{--gov-blue:#1a3a5c;--gov-mid:#2560a0;--gov-light:#eef4fb;--gov-border:#c5d6ea;--accent:#e8a020;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1e2d3d;display:flex;flex-direction:column;min-height:100vh;}
+    .top-header{background:linear-gradient(135deg,var(--gov-blue),var(--gov-mid));color:#fff;padding:0 1.5rem;height:60px;display:flex;align-items:center;gap:1rem;border-bottom:4px solid var(--accent);position:sticky;top:0;z-index:1000;box-shadow:0 3px 12px rgba(0,0,0,.2);}
+    .top-header .logo{width:40px;height:40px;background:rgba(255,255,255,.15);border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+    .top-header h1{font-size:1rem;font-weight:700;}.top-header p{font-size:.66rem;opacity:.75;text-transform:uppercase;letter-spacing:.05em;}
+    .back-btn{margin-left:auto;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:6px;padding:5px 14px;font-size:.78rem;text-decoration:none;display:flex;align-items:center;gap:.4rem;}
+    .back-btn:hover{background:rgba(255,255,255,.25);color:#fff;}
+    .hamburger{background:none;border:none;color:#fff;font-size:1.3rem;cursor:pointer;display:none;}
+    .body-wrap{display:flex;flex:1;}
+    .sidebar{width:240px;background:var(--gov-blue);flex-shrink:0;display:flex;flex-direction:column;overflow-y:auto;position:sticky;top:60px;height:calc(100vh - 60px);}
+    .sidebar-label{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);padding:10px 16px 3px;}
+    .sidebar-link{display:flex;align-items:center;gap:.6rem;padding:8px 16px;font-size:.8rem;color:rgba(255,255,255,.75);text-decoration:none;border-left:3px solid transparent;transition:all .15s;}
+    .sidebar-link i{font-size:.95rem;opacity:.8;}
+    .sidebar-link:hover{background:rgba(255,255,255,.08);color:#fff;border-left-color:var(--accent);}
+    .sidebar-link.active{background:rgba(255,255,255,.13);color:#fff;border-left-color:var(--accent);font-weight:600;}
+    .sidebar-link .mn{margin-left:auto;background:var(--accent);color:var(--gov-blue);font-size:.62rem;font-weight:700;padding:1px 6px;border-radius:8px;}
+    .sidebar-divider{border-color:rgba(255,255,255,.1);margin:2px 0;}
+    .main{flex:1;padding:1.5rem;overflow-y:auto;}
+    .page-hd{background:#fff;border:1px solid var(--gov-border);border-radius:10px;padding:1rem 1.2rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:1rem;box-shadow:0 2px 8px rgba(26,58,92,.06);}
+    .page-hd .icon{width:46px;height:46px;background:var(--gov-light);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:var(--gov-mid);border:1px solid var(--gov-border);}
+    .page-hd h2{font-size:1.05rem;font-weight:700;color:var(--gov-blue);margin-bottom:2px;}.page-hd p{font-size:.74rem;color:#6b8aaa;margin:0;}
+    .nav-tabs-gov{border-bottom:2px solid var(--gov-border);margin-bottom:1.2rem;display:flex;gap:0;overflow-x:auto;}
+    .nav-tab{padding:.55rem 1.1rem;font-size:.78rem;font-weight:600;color:#6b8aaa;border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:all .15s;display:flex;align-items:center;gap:.35rem;}
+    .nav-tab:hover{color:var(--gov-blue);}.nav-tab.active{color:var(--gov-blue);border-bottom-color:var(--accent);}
+    .tab-panel{display:none;}.tab-panel.active{display:block;}
+    .card-gov{background:#fff;border:1px solid var(--gov-border);border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(26,58,92,.06);margin-bottom:1.2rem;}
+    .card-hd{background:var(--gov-light);border-bottom:1px solid var(--gov-border);padding:.6rem 1rem;font-size:.74rem;font-weight:700;color:var(--gov-blue);text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:.4rem;}
+    .card-hd i{color:var(--accent);}.card-body-p{padding:1rem;}
+    .sec-lbl{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gov-mid);margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem;}
+    .sec-lbl::after{content:'';flex:1;height:1px;background:var(--gov-border);}
+    .tbl{width:100%;border-collapse:collapse;}
+    .tbl th{background:var(--gov-blue);color:#fff;font-size:.7rem;font-weight:600;padding:8px 10px;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;}
+    .tbl td{padding:7px 10px;font-size:.82rem;border-bottom:1px solid #e8eef5;vertical-align:middle;}
+    .tbl tr:last-child td{border-bottom:none;}.tbl tr:nth-child(even) td{background:#f7fafd;}.tbl tr:hover td{background:#ebf3fb;}
+    .ob{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.71rem;font-weight:600;}
+    .ob-pwd{background:#dbeafe;color:#1e40af;}.ob-zp{background:#dcfce7;color:#166534;}.ob-tribal{background:#fef9c3;color:#854d0e;}
+    .ob-midc{background:#fce7f3;color:#9d174d;}.ob-mc{background:#e0f2fe;color:#075985;}.ob-mmb{background:#f3e8ff;color:#6b21a8;}
+    .ob-irr{background:#ecfdf5;color:#064e3b;}.ob-nh{background:#fff7ed;color:#9a3412;}.ob-har{background:#ede9fe;color:#4c1d95;}
+    .ob-pol{background:#fef2f2;color:#991b1b;}.ob-hlt{background:#f0fdf4;color:#14532d;}
+    .class-badge{display:inline-block;padding:3px 10px;border-radius:4px;font-size:.75rem;font-weight:700;}
+    .form-label{font-size:.72rem;font-weight:600;color:#4a6180;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem;}
+    .form-control,.form-select{border:1.5px solid var(--gov-border);border-radius:6px;font-size:.85rem;}
+    .form-control:focus,.form-select:focus{border-color:var(--gov-mid);box-shadow:0 0 0 3px rgba(37,96,160,.1);}
+    .btn-gov{background:var(--gov-blue);color:#fff;border:none;border-radius:6px;padding:.45rem 1.2rem;font-size:.82rem;font-weight:600;cursor:pointer;}
+    .btn-gov:hover{background:var(--gov-mid);}
+    .btn-out{background:transparent;color:var(--gov-blue);border:1.5px solid var(--gov-border);border-radius:6px;padding:.45rem 1.1rem;font-size:.82rem;font-weight:600;cursor:pointer;}
+    .btn-out:hover{background:var(--gov-blue);color:#fff;border-color:var(--gov-blue);}
+    .btn-acc{background:var(--accent);color:var(--gov-blue);border:none;border-radius:6px;padding:.45rem 1.2rem;font-size:.82rem;font-weight:700;cursor:pointer;}
+    .action-bar{background:#fff;border-top:1px solid var(--gov-border);padding:.85rem 1.2rem;display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;}
+    .info-box{background:var(--gov-light);border:1px solid var(--gov-border);border-radius:8px;padding:.75rem 1rem;font-size:.8rem;margin-bottom:1rem;}
+    .reg-matrix td,.reg-matrix th{text-align:center;}
+    .reg-matrix td:first-child{text-align:left;font-weight:600;}
+    @media(max-width:991px){.sidebar{display:none;position:fixed;top:60px;left:0;height:calc(100vh - 60px);z-index:999;}.sidebar.open{display:flex;}.hamburger{display:block;}}
+  </style>
+</head>
+<body>
+<header class="top-header">
+  <button class="hamburger" onclick="document.getElementById('sb').classList.toggle('open')"><i class="bi bi-list"></i></button>
+  <div class="logo"><i class="bi bi-building-fill-gear"></i></div>
+  <div><h1>Module 2 — Registration Information</h1><p>Master Data · e-Tender Management System</p></div>
+  <a href="00_dashboard.html" class="back-btn"><i class="bi bi-arrow-left"></i> Dashboard</a>
+</header>
+<div class="body-wrap">
+  <nav class="sidebar" id="sb">
+    <div style="padding:8px 0 4px;">
+      <div class="sidebar-label">Master Data</div>
+      <a class="sidebar-link" href="01_organization_info.html"><i class="bi bi-diagram-3-fill"></i> Organisation Info <span class="mn">M1</span></a>
+      <a class="sidebar-link active" href="02_registration_info.html"><i class="bi bi-person-badge-fill"></i> Registration Info <span class="mn">M2</span></a>
+      <a class="sidebar-link" href="03_agency_info.html"><i class="bi bi-buildings-fill"></i> Agency Information <span class="mn">M4</span></a>
+    </div>
+    <hr class="sidebar-divider"/>
+    <div style="padding:4px 0;">
+      <div class="sidebar-label">Agency Documents</div>
+      <a class="sidebar-link" href="04_legal_documents.html"><i class="bi bi-file-earmark-lock2-fill"></i> Legal Documents <span class="mn">M5</span></a>
+      <a class="sidebar-link" href="05_hired_machinery.html"><i class="bi bi-truck-front-fill"></i> Hired Machinery <span class="mn">M6</span></a>
+      <a class="sidebar-link" href="06_qualifying_docs.html"><i class="bi bi-patch-check-fill"></i> Qualifying Docs <span class="mn">M7</span></a>
+    </div>
+    <hr class="sidebar-divider"/>
+    <div style="padding:4px 0;">
+      <div class="sidebar-label">Tender Process</div>
+      <a class="sidebar-link" href="07_tender_information.html"><i class="bi bi-newspaper"></i> Published Tender <span class="mn">M8</span></a>
+      <a class="sidebar-link" href="08_checklist.html"><i class="bi bi-clipboard2-check-fill"></i> Checklist <span class="mn">M9</span></a>
+      <a class="sidebar-link" href="09_agency_selection.html"><i class="bi bi-person-check-fill"></i> Agency Selection <span class="mn">M10</span></a>
+    </div>
+    <hr class="sidebar-divider"/>
+    <div style="padding:4px 0;">
+      <div class="sidebar-label">Post-Tender</div>
+      <a class="sidebar-link" href="10_after_submission.html"><i class="bi bi-send-fill"></i> After Submission <span class="mn">M12</span></a>
+      <a class="sidebar-link" href="11_status_bid.html"><i class="bi bi-bar-chart-fill"></i> Status of Bid <span class="mn">M13</span></a>
+      <a class="sidebar-link" href="12_status_emd.html"><i class="bi bi-bank2"></i> Status of EMD <span class="mn">M14</span></a>
+      <a class="sidebar-link" href="13_reports.html"><i class="bi bi-file-bar-graph-fill"></i> Reports <span class="mn">M15</span></a>
+    </div>
+    <hr class="sidebar-divider"/>
+    <a class="sidebar-link" href="00_dashboard.html"><i class="bi bi-house-fill"></i> Dashboard</a>
+  </nav>
+
+  <main class="main">
+    <div class="page-hd">
+      <div class="icon"><i class="bi bi-person-badge-fill"></i></div>
+      <div><h2>Registration Information &nbsp;<span style="background:#dbeafe;color:#1e40af;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:4px;">MDB</span></h2>
+      <p>Type of registration, contractor class (I–VII / A–D), firm type &amp; designation of head — all organisations.</p></div>
+      <div class="ms-auto"><button class="btn-acc" onclick="switchTab(3,document.querySelectorAll('.nav-tab')[3])"><i class="bi bi-plus-lg"></i> Add Registration</button></div>
+    </div>
+
+    <div class="nav-tabs-gov">
+      <button class="nav-tab active" onclick="switchTab(0,this)"><i class="bi bi-table"></i> Registration Types</button>
+      <button class="nav-tab" onclick="switchTab(1,this)"><i class="bi bi-grid"></i> Class Matrix</button>
+      <button class="nav-tab" onclick="switchTab(2,this)"><i class="bi bi-building"></i> Firm Types</button>
+      <button class="nav-tab" onclick="switchTab(3,this)"><i class="bi bi-pencil-square"></i> Add / Edit</button>
+    </div>
+
+    <!-- TAB 0: REGISTRATION TYPES -->
+    <div class="tab-panel active" id="tp0">
+      <div class="card-gov">
+        <div class="card-hd d-flex justify-content-between align-items-center flex-wrap gap-2">
+          <span><i class="bi bi-list-check"></i> All Registration Types by Organisation</span>
+          <div class="d-flex gap-2">
+            <select class="form-select form-select-sm" style="width:auto;font-size:.75rem;" onchange="filterReg(this.value)">
+              <option value="">All Orgs</option><option>PWD</option><option>ZP</option><option>Tribal</option><option>MIDC</option><option>MC</option><option>MMB</option><option>Irrigation</option><option>NH</option><option>Harbour</option>
+            </select>
+            <input class="form-control form-control-sm" style="width:150px;font-size:.75rem;" placeholder="Search…" oninput="searchReg(this.value)"/>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="tbl" id="regTbl">
+            <thead><tr><th>#</th><th>Organisation</th><th>Type of Registration</th><th>Class/Grade</th><th>Firm Type</th><th>Head Designation</th><th>Action</th></tr></thead>
+            <tbody id="regBody">
+              <tr data-org="PWD"><td>1</td><td><span class="ob ob-pwd">PWD</span></td><td>PWD Contractor Registration</td><td>Class I, II, III, IV, V, VI, VII</td><td>Individual / Partnership / Pvt Ltd / Ltd</td><td>Proprietor / Partner / Director</td><td><button class="btn-out" style="padding:2px 10px;font-size:.7rem;"><i class="bi bi-pencil"></i></button></td></tr>
+              <tr data-org="ZP"><td>2</td><td><span class="ob ob-zp">ZP</span></td><td>ZP Contractor Registration</td><td>Class I, II, III, IV, V</td><td>Individual / Partnership / Pvt Ltd</td><td>Proprietor / Partner / Director</td><td><button class="btn-out" style="padding:2px 10px;font-size:.7rem;"><i class="bi bi-pencil"></i></button></td></tr>
+              <tr data-org="Tribal"><td>3</td><td><span class="ob ob-tribal">Tribal</span></td><td>Tribal Dept Registration</td><td>Class I, II, III</td><td>Individual / Partnership</td><td>Proprietor / Partner</td><td><button class="btn-out" style="padding:2px 10px;font-size:.7rem;"><i class="bi bi-pencil"></i></button></td></tr>
+              <tr data-org="MIDC"><td>4</td><td><span class="ob ob-midc">MIDC</span></td><td>MIDC Approved Contractor</td><td>A, B, C, D</td><td>Individual / Partnership / Pvt Ltd / Ltd</td><td>Proprietor / Partner / Director</td><td><button class="btn-out" style="padding:2px 10px;font-size:.7rem;"><i class="bi bi-pencil"></i></button></td></tr>
+              <tr data-org="MC"><td>5</td><td><span class="ob ob-mc">MC</span></td><td>Municipal Council Registration</td><td>Class I, II, III</td><td>Individual / Partnership / Pvt Ltd</td><td>Proprietor / Partner / Director</td><td><button class="btn-out" style="padding:2px 10px;font-size:.7rem;"><i class="bi bi-pencil"></i></button></td></tr>
+              <tr data-org="MMB"><td>6</td><td><span class="ob ob-mmb">MMB</span></td><td>MMB Registration</td><td>Class I, II, III, IV</td><td>Individual / Partnership / Pvt Ltd</td><td>Proprietor / Partner / Director</td><td><button class="btn-out" style="padding:2px 10px;font-size:.7rem;"><i class="bi bi-pencil"></i></button></td></tr>
+              <tr data-org="Irrigation"><td>7</td><td><span class="ob ob-irr">Irrigation</span></td><td>WRD Contractor Registration</td><td>Class I, II, III, IV, V</td><td>Individual / Partnership / Pvt Ltd / Ltd</td><td>Proprietor / Partner / Director</td><td><button class="btn-out" style="padding:2px 10px;font-size:.7rem;"><i class="bi bi-pencil"></i></button></td></tr>
+              <tr data-org="NH"><td>8</td><td><span class="ob ob-nh">NH</span></td><td>NHAI / PWD NH Registration</td><td>Class I, II, III</td><td>Individual / Partnership / Pvt Ltd / Ltd</td><td>Proprietor / Partner / Director</td><td><button class="btn-out" style="padding:2px 10px;font-size:.7rem;"><i class="bi bi-pencil"></i></button></td></tr>
+              <tr data-org="Harbour"><td>9</td><td><span class="ob ob-har">Harbour</span></td><td>Harbour Dept Registration</td><td>Class I, II, III</td><td>Individual / Partnership / Pvt Ltd</td><td>Proprietor / Partner / Director</td><td><button class="btn-out" style="padding:2px 10px;font-size:.7rem;"><i class="bi bi-pencil"></i></button></td></tr>
+              <tr data-org="Police Housing"><td>10</td><td><span class="ob ob-pol">Police Housing</span></td><td>Police Housing Board Reg.</td><td>Class I, II, III</td><td>Individual / Partnership / Pvt Ltd</td><td>Proprietor / Partner / Director</td><td><button class="btn-out" style="padding:2px 10px;font-size:.7rem;"><i class="bi bi-pencil"></i></button></td></tr>
+              <tr data-org="Health"><td>11</td><td><span class="ob ob-hlt">Health</span></td><td>Health Dept Registration</td><td>Class I, II, III</td><td>Individual / Partnership / Pvt Ltd</td><td>Proprietor / Partner / Director</td><td><button class="btn-out" style="padding:2px 10px;font-size:.7rem;"><i class="bi bi-pencil"></i></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="action-bar"><span style="font-size:.74rem;color:#6b8aaa;">Total <strong id="regCount">11</strong> registration types</span><button class="btn-gov ms-auto"><i class="bi bi-download"></i> Export</button></div>
+      </div>
+    </div>
+
+    <!-- TAB 1: CLASS MATRIX -->
+    <div class="tab-panel" id="tp1">
+      <div class="card-gov">
+        <div class="card-hd"><i class="bi bi-grid"></i> Class / Grade Matrix — Organisation Wise</div>
+        <div class="card-body-p">
+          <div class="info-box"><i class="bi bi-info-circle-fill text-primary me-2"></i>PWD/ZP/Irrigation use <strong>Class I–VII</strong>. MIDC uses <strong>Grade A–D</strong>. Other orgs use <strong>Class I–III or I–V</strong>.</div>
+          <!-- PWD Classes -->
+          <div class="sec-lbl"><i class="bi bi-diagram-3"></i> PWD / ZP / Irrigation — Class I to VII</div>
+          <div style="overflow-x:auto;margin-bottom:1.2rem;">
+            <table class="tbl">
+              <thead><tr><th>Class</th><th>Tender Value Limit</th><th>Registration Fee</th><th>Valid For</th><th>Eligible Works</th></tr></thead>
+              <tbody>
+                <tr><td><span class="class-badge" style="background:#dbeafe;color:#1e40af;">Class I</span></td><td>Above ₹2 Crore</td><td>₹10,000</td><td>3 Years</td><td>All types of civil works</td></tr>
+                <tr><td><span class="class-badge" style="background:#dcfce7;color:#166534;">Class II</span></td><td>Up to ₹2 Crore</td><td>₹5,000</td><td>3 Years</td><td>Road, Building, Bridge</td></tr>
+                <tr><td><span class="class-badge" style="background:#fef9c3;color:#854d0e;">Class III</span></td><td>Up to ₹50 Lakh</td><td>₹2,500</td><td>3 Years</td><td>Road, Building</td></tr>
+                <tr><td><span class="class-badge" style="background:#fce7f3;color:#9d174d;">Class IV</span></td><td>Up to ₹20 Lakh</td><td>₹1,500</td><td>3 Years</td><td>Repairs, Maintenance</td></tr>
+                <tr><td><span class="class-badge" style="background:#e0f2fe;color:#075985;">Class V</span></td><td>Up to ₹10 Lakh</td><td>₹1,000</td><td>3 Years</td><td>Minor works</td></tr>
+                <tr><td><span class="class-badge" style="background:#f3e8ff;color:#6b21a8;">Class VI</span></td><td>Up to ₹5 Lakh</td><td>₹500</td><td>3 Years</td><td>Minor repairs</td></tr>
+                <tr><td><span class="class-badge" style="background:#fff7ed;color:#9a3412;">Class VII</span></td><td>Up to ₹2 Lakh</td><td>₹250</td><td>3 Years</td><td>Very minor works</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- MIDC Grades -->
+          <div class="sec-lbl"><i class="bi bi-buildings-fill"></i> MIDC — Grade A to D</div>
+          <div style="overflow-x:auto;margin-bottom:1.2rem;">
+            <table class="tbl">
+              <thead><tr><th>Grade</th><th>Tender Value Limit</th><th>Registration Fee</th><th>Valid For</th><th>Eligible Works</th></tr></thead>
+              <tbody>
+                <tr><td><span class="class-badge" style="background:#dbeafe;color:#1e40af;">Grade A</span></td><td>Unlimited</td><td>₹25,000</td><td>3 Years</td><td>All MIDC civil works</td></tr>
+                <tr><td><span class="class-badge" style="background:#dcfce7;color:#166534;">Grade B</span></td><td>Up to ₹5 Crore</td><td>₹10,000</td><td>3 Years</td><td>Building, Road, Infrastructure</td></tr>
+                <tr><td><span class="class-badge" style="background:#fef9c3;color:#854d0e;">Grade C</span></td><td>Up to ₹1 Crore</td><td>₹5,000</td><td>3 Years</td><td>Building, Road</td></tr>
+                <tr><td><span class="class-badge" style="background:#fce7f3;color:#9d174d;">Grade D</span></td><td>Up to ₹25 Lakh</td><td>₹2,500</td><td>3 Years</td><td>Minor works</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: FIRM TYPES -->
+    <div class="tab-panel" id="tp2">
+      <div class="card-gov">
+        <div class="card-hd"><i class="bi bi-building"></i> Firm / Entity Types</div>
+        <div class="card-body-p">
+          <div class="row g-3 mb-4">
+            <div class="col-md-3 col-sm-6">
+              <div class="p-3 rounded text-center" style="background:#dbeafe;border:1px solid #93c5fd;">
+                <i class="bi bi-person-fill" style="font-size:1.8rem;color:#2560a0;"></i>
+                <div style="font-weight:700;color:#1e40af;margin:.4rem 0 .2rem;">Individual / Proprietary</div>
+                <div style="font-size:.75rem;color:#3b82f6;">Single owner firm</div>
+                <div style="font-size:.72rem;color:#6b8aaa;margin-top:.4rem;">Head: <strong>Proprietor</strong></div>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+              <div class="p-3 rounded text-center" style="background:#dcfce7;border:1px solid #86efac;">
+                <i class="bi bi-people-fill" style="font-size:1.8rem;color:#16a34a;"></i>
+                <div style="font-weight:700;color:#166534;margin:.4rem 0 .2rem;">Partnership Firm</div>
+                <div style="font-size:.75rem;color:#22c55e;">2 or more partners</div>
+                <div style="font-size:.72rem;color:#6b8aaa;margin-top:.4rem;">Head: <strong>Partner</strong></div>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+              <div class="p-3 rounded text-center" style="background:#fef9c3;border:1px solid #fde047;">
+                <i class="bi bi-building" style="font-size:1.8rem;color:#ca8a04;"></i>
+                <div style="font-weight:700;color:#854d0e;margin:.4rem 0 .2rem;">Private Limited</div>
+                <div style="font-size:.75rem;color:#ca8a04;">Pvt Ltd Company</div>
+                <div style="font-size:.72rem;color:#6b8aaa;margin-top:.4rem;">Head: <strong>Director</strong></div>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+              <div class="p-3 rounded text-center" style="background:#f3e8ff;border:1px solid #d8b4fe;">
+                <i class="bi bi-buildings-fill" style="font-size:1.8rem;color:#7c3aed;"></i>
+                <div style="font-weight:700;color:#6b21a8;margin:.4rem 0 .2rem;">Limited Company</div>
+                <div style="font-size:.75rem;color:#a855f7;">Public Ltd Company</div>
+                <div style="font-size:.72rem;color:#6b8aaa;margin-top:.4rem;">Head: <strong>Director / MD</strong></div>
+              </div>
+            </div>
+          </div>
+          <div class="sec-lbl"><i class="bi bi-table"></i> Firm Type vs Organisation Eligibility</div>
+          <div style="overflow-x:auto;">
+            <table class="tbl reg-matrix">
+              <thead><tr><th style="text-align:left;">Firm Type</th><th>PWD</th><th>ZP</th><th>Tribal</th><th>MIDC</th><th>MC</th><th>MMB</th><th>Irrigation</th><th>NH</th><th>Harbour</th></tr></thead>
+              <tbody>
+                <tr><td>Individual / Proprietary</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+                <tr><td>Partnership Firm</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+                <tr><td>Private Limited</td><td>✅</td><td>✅</td><td></td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+                <tr><td>Limited Company</td><td>✅</td><td>✅</td><td></td><td>✅</td><td></td><td>✅</td><td>✅</td><td>✅</td><td></td></tr>
+                <tr><td>LLP</td><td>✅</td><td>✅</td><td></td><td>✅</td><td></td><td>✅</td><td>✅</td><td>✅</td><td></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: ADD / EDIT -->
+    <div class="tab-panel" id="tp3">
+      <div class="card-gov">
+        <div class="card-hd"><i class="bi bi-pencil-square"></i> Add / Edit Registration Record</div>
+        <div class="card-body-p">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Organisation</label>
+              <select class="form-select" id="rOrg" onchange="updateClass()">
+                <option value="">-- Select --</option>
+                <option>PWD</option><option>ZP</option><option>Tribal</option><option>MIDC</option>
+                <option>MC</option><option>MMB</option><option>Irrigation</option><option>NH</option>
+                <option>Harbour</option><option>Police Housing</option><option>Health</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Type of Registration</label>
+              <input class="form-control" id="rType" placeholder="e.g. PWD Contractor Registration"/>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Class / Grade</label>
+              <select class="form-select" id="rClass">
+                <option value="">-- Select Org first --</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Firm Type</label>
+              <select class="form-select">
+                <option>Individual / Proprietary</option>
+                <option>Partnership Firm</option>
+                <option>Private Limited</option>
+                <option>Limited Company</option>
+                <option>LLP</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Designation of Head</label>
+              <select class="form-select" id="rHead">
+                <option>Proprietor</option><option>Partner</option><option>Director</option><option>Managing Director</option><option>CEO</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Registration Valid For</label>
+              <select class="form-select">
+                <option>1 Year</option><option>2 Years</option><option selected>3 Years</option><option>5 Years</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Registration Fee (₹)</label>
+              <input class="form-control" id="rFee" placeholder="e.g. 10000"/>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Tender Value Limit</label>
+              <input class="form-control" placeholder="e.g. Above ₹2 Crore"/>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Eligible Work Types</label>
+              <input class="form-control" placeholder="e.g. Road, Building, Bridge"/>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Remarks</label>
+              <textarea class="form-control" rows="2" placeholder="Any additional notes…"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="action-bar">
+          <button class="btn-out"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+          <button class="btn-gov" onclick="showSaved()"><i class="bi bi-floppy"></i> Save Record</button>
+          <span id="savedMsg" style="font-size:.78rem;color:#16a34a;display:none;"><i class="bi bi-check-circle-fill"></i> Saved successfully!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function switchTab(n,btn){document.querySelectorAll('.tab-panel').forEach((p,i)=>p.classList.toggle('active',i===n));document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+  function filterReg(v){document.querySelectorAll('#regBody tr').forEach(r=>r.style.display=(!v||r.dataset.org===v)?'':'none');document.getElementById('regCount').textContent=document.querySelectorAll('#regBody tr:not([style*="none"])').length;}
+  function searchReg(q){q=q.toLowerCase();document.querySelectorAll('#regBody tr').forEach(r=>r.style.display=r.textContent.toLowerCase().includes(q)?'':'none');}
+  function updateClass(){
+    const org=document.getElementById('rOrg').value;
+    const sel=document.getElementById('rClass');
+    sel.innerHTML='';
+    const midc=['Grade A','Grade B','Grade C','Grade D'];
+    const std=['Class I','Class II','Class III','Class IV','Class V','Class VI','Class VII'];
+    const short=['Class I','Class II','Class III'];
+    const opts=org==='MIDC'?midc:['PWD','ZP','Irrigation','NH'].includes(org)?std:short;
+    opts.forEach(o=>{const op=document.createElement('option');op.text=o;sel.add(op);});
+  }
+  function showSaved(){const m=document.getElementById('savedMsg');m.style.display='inline';setTimeout(()=>m.style.display='none',3000);}
+</script>
+</body>
+</html>

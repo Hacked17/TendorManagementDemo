@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tender Information Module</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+  <style>
+    :root {
+      --gov-blue: #1a3a5c;
+      --gov-blue-mid: #2560a0;
+      --gov-accent: #e8a020;
+      --gov-light: #eef4fb;
+      --gov-border: #c5d6ea;
+      --section-gap: 2rem;
+      --card-radius: 10px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      background: #f0f4f8;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 0.93rem;
+      color: #1e2d3d;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .gov-header {
+      background: linear-gradient(135deg, var(--gov-blue) 0%, var(--gov-blue-mid) 100%);
+      color: #fff;
+      padding: 1.2rem 2rem 1rem;
+      border-bottom: 4px solid var(--gov-accent);
+      box-shadow: 0 3px 12px rgba(0,0,0,0.18);
+    }
+    .gov-header .emblem {
+      width: 56px; height: 56px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.7rem;
+      border: 2px solid rgba(255,255,255,0.3);
+      flex-shrink: 0;
+    }
+    .gov-header h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      margin: 0;
+    }
+    .gov-header p {
+      font-size: 0.78rem;
+      opacity: 0.82;
+      margin: 0;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .badge-accent {
+      background: var(--gov-accent);
+      color: #1a3a5c;
+      font-weight: 700;
+      font-size: 0.72rem;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Section Labels ── */
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gov-blue-mid);
+      margin-bottom: 0.65rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gov-border);
+    }
+
+    /* ── Cards ── */
+    .info-card {
+      background: #fff;
+      border: 1px solid var(--gov-border);
+      border-radius: var(--card-radius);
+      box-shadow: 0 2px 8px rgba(26,58,92,0.07);
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .info-card:hover { box-shadow: 0 4px 18px rgba(26,58,92,0.13); }
+
+    .card-head {
+      background: var(--gov-light);
+      border-bottom: 1px solid var(--gov-border);
+      padding: 0.6rem 1rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--gov-blue);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .card-head i { color: var(--gov-accent); font-size: 1rem; }
+
+    /* ── Org Table ── */
+    .org-table { width: 100%; border-collapse: collapse; }
+    .org-table th {
+      background: var(--gov-blue);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 8px 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      white-space: nowrap;
+    }
+    .org-table td {
+      padding: 7px 12px;
+      font-size: 0.84rem;
+      border-bottom: 1px solid #e8eef5;
+      vertical-align: middle;
+    }
+    .org-table tr:last-child td { border-bottom: none; }
+    .org-table tr:nth-child(even) td { background: #f7fafd; }
+    .org-table tr:hover td { background: #ebf3fb; }
+    .org-badge {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 4px;
+      font-size: 0.73rem;
+      font-weight: 600;
+    }
+    .org-badge.pwd    { background: #dbeafe; color: #1e40af; }
+    .org-badge.zp     { background: #dcfce7; color: #166534; }
+    .org-badge.tribal { background: #fef9c3; color: #854d0e; }
+    .org-badge.midc   { background: #fce7f3; color: #9d174d; }
+    .org-badge.mc     { background: #e0f2fe; color: #075985; }
+    .org-badge.mmb    { background: #f3e8ff; color: #6b21a8; }
+    .org-badge.irr    { background: #ecfdf5; color: #064e3b; }
+    .org-badge.nh     { background: #fff7ed; color: #9a3412; }
+    .org-badge.harbour{ background: #ede9fe; color: #4c1d95; }
+    .org-badge.police { background: #fef2f2; color: #991b1b; }
+    .org-badge.health { background: #f0fdf4; color: #14532d; }
+
+    /* ── Document Pills ── */
+    .doc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 0.6rem;
+      padding: 1rem;
+    }
+    .doc-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--gov-light);
+      border: 1px solid var(--gov-border);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 0.82rem;
+      color: var(--gov-blue);
+      transition: background 0.15s, border-color 0.15s;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .doc-pill:hover {
+      background: #d6e8fb;
+      border-color: var(--gov-blue-mid);
+      color: var(--gov-blue);
+    }
+    .doc-pill i { color: var(--gov-accent); font-size: 1.05rem; flex-shrink: 0; }
+    .doc-pill .doc-code {
+      margin-left: auto;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #fff;
+      background: var(--gov-blue-mid);
+      border-radius: 4px;
+      padding: 1px 7px;
+      white-space: nowrap;
+    }
+
+    /* ── Work Types ── */
+    .work-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 1rem;
+    }
+    .work-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: #fff;
+      border: 1.5px solid var(--gov-border);
+      border-radius: 20px;
+      padding: 5px 13px;
+      font-size: 0.8rem;
+      color: var(--gov-blue);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .work-chip:hover, .work-chip.active {
+      background: var(--gov-blue);
+      color: #fff;
+      border-color: var(--gov-blue);
+    }
+    .work-chip i { font-size: 0.85rem; }
+
+    /* ── Form Controls ── */
+    .form-section { padding: 1rem; }
+    .form-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #4a6180;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.3rem;
+    }
+    .form-control, .form-select {
+      border: 1.5px solid var(--gov-border);
+      border-radius: 6px;
+      font-size: 0.86rem;
+      color: #1e2d3d;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .form-control:focus, .form-select:focus {
+      border-color: var(--gov-blue-mid);
+      box-shadow: 0 0 0 3px rgba(37,96,160,0.12);
+    }
+
+    /* ── Submit / Action bar ── */
+    .action-bar {
+      background: #fff;
+      border-top: 1px solid var(--gov-border);
+      padding: 1rem 1.5rem;
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .btn-gov {
+      background: var(--gov-blue);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.5rem 1.4rem;
+      font-size: 0.86rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      transition: background 0.18s, transform 0.1s;
+    }
+    .btn-gov:hover {
+      background: var(--gov-blue-mid);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .btn-gov-outline {
+      background: transparent;
+      color: var(--gov-blue);
+      border: 1.5px solid var(--gov-blue);
+      border-radius: 6px;
+      padding: 0.5rem 1.2rem;
+      font-size: 0.86rem;
+      font-weight: 600;
+      transition: all 0.18s;
+    }
+    .btn-gov-outline:hover {
+      background: var(--gov-blue);
+      color: #fff;
+    }
+    .btn-accent {
+      background: var(--gov-accent);
+      color: var(--gov-blue);
+      border: none;
+      border-radius: 6px;
+      padding: 0.5rem 1.4rem;
+      font-size: 0.86rem;
+      font-weight: 700;
+      transition: filter 0.18s;
+    }
+    .btn-accent:hover { filter: brightness(1.08); }
+
+    /* ── Steps / Progress ── */
+    .step-bar {
+      display: flex;
+      gap: 0;
+      background: var(--gov-light);
+      border-bottom: 1px solid var(--gov-border);
+      overflow-x: auto;
+    }
+    .step-item {
+      flex: 1;
+      min-width: 120px;
+      padding: 0.7rem 0.5rem;
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #7a99b8;
+      border-right: 1px solid var(--gov-border);
+      cursor: pointer;
+      transition: background 0.15s;
+      position: relative;
+    }
+    .step-item:last-child { border-right: none; }
+    .step-item.active {
+      color: var(--gov-blue);
+      background: #fff;
+    }
+    .step-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 3px;
+      background: var(--gov-accent);
+    }
+    .step-item.done { color: #16a34a; }
+    .step-item .step-num {
+      display: inline-flex;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: currentColor;
+      color: #fff;
+      font-size: 0.65rem;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2px;
+      opacity: 0.85;
+    }
+    .step-item.active .step-num { background: var(--gov-blue); opacity: 1; }
+    .step-item.done .step-num { background: #16a34a; opacity: 1; }
+
+    /* ── Tab panels ── */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Responsive tweaks ── */
+    @media (max-width: 576px) {
+      .gov-header h1 { font-size: 1rem; }
+      .doc-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════ HEADER ════════════ -->
+<div class="gov-header">
+  <div class="d-flex align-items-center gap-3">
+    <div class="emblem"><i class="bi bi-building-fill-gear"></i></div>
+    <div>
+      <p>Government of Maharashtra — e-Tender Portal</p>
+      <h1>Organisation &amp; Tender Information Module</h1>
+    </div>
+    <div class="ms-auto d-none d-md-block">
+      <span class="badge-accent"><i class="bi bi-shield-fill-check me-1"></i>Verified Portal</span>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid px-3 py-4" style="max-width:1280px;">
+
+  <!-- ══ Step bar ══ -->
+  <div class="info-card mb-4">
+    <div class="step-bar" id="stepBar">
+      <div class="step-item active" onclick="showTab(0)">
+        <div><span class="step-num">1</span></div>Organisation Info
+      </div>
+      <div class="step-item" onclick="showTab(1)">
+        <div><span class="step-num">2</span></div>Legal Documents
+      </div>
+      <div class="step-item" onclick="showTab(2)">
+        <div><span class="step-num">3</span></div>Type of Work
+      </div>
+      <div class="step-item" onclick="showTab(3)">
+        <div><span class="step-num">4</span></div>Bidder Details
+      </div>
+    </div>
+
+    <!-- TAB 1 — ORGANISATION INFO -->
+    <div class="tab-panel active" id="tab0">
+      <div class="row g-0">
+        <div class="col-lg-5 border-end">
+          <div class="form-section">
+            <div class="section-label"><i class="bi bi-diagram-3"></i> Select Organisation</div>
+            <div class="mb-3">
+              <label class="form-label">Organisation Type</label>
+              <select class="form-select" id="orgSelect" onchange="filterOrg()">
+                <option value="">-- All Organisations --</option>
+                <option value="PWD">PWD</option>
+                <option value="ZP">ZP</option>
+                <option value="Tribal">Tribal</option>
+                <option value="MIDC">MIDC</option>
+                <option value="MC">MC</option>
+                <option value="MMB">MMB</option>
+                <option value="Irrigation">Irrigation</option>
+                <option value="NH">NH</option>
+                <option value="Harbour">Harbour</option>
+                <option value="Police Housing">Police Housing</option>
+                <option value="Health">Health</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Division / Location</label>
+              <select class="form-select">
+                <option>Ratnagiri</option>
+                <option>Chiplun</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Contact Email</label>
+              <input type="email" class="form-control" placeholder="e.g. exe.engineer@pwd.gov.in"/>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Phone Number</label>
+              <input type="tel" class="form-control" placeholder="+91 XXXXX XXXXX"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <div class="card-head"><i class="bi bi-table"></i> Organisation Directory</div>
+          <div style="overflow-x:auto;">
+            <table class="org-table" id="orgTable">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Organisation</th>
+                  <th>Tender Inviting Authority</th>
+                  <th>Office &amp; Place</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-org="PWD">
+                  <td>1</td>
+                  <td><span class="org-badge pwd">PWD</span></td>
+                  <td>Exe. Engineer</td>
+                  <td>Public Works Division, Ratnagiri / Chiplun</td>
+                </tr>
+                <tr data-org="ZP">
+                  <td>2</td>
+                  <td><span class="org-badge zp">ZP</span></td>
+                  <td>Suptd. Engineer</td>
+                  <td>Z P PWD, Ratnagiri / Chiplun</td>
+                </tr>
+                <tr data-org="Tribal">
+                  <td>3</td>
+                  <td><span class="org-badge tribal">Tribal</span></td>
+                  <td>Chief Engineer</td>
+                  <td>—</td>
+                </tr>
+                <tr data-org="MIDC">
+                  <td>4</td>
+                  <td><span class="org-badge midc">MIDC</span></td>
+                  <td>CEO</td>
+                  <td>—</td>
+                </tr>
+                <tr data-org="MC">
+                  <td>5</td>
+                  <td><span class="org-badge mc">MC</span></td>
+                  <td>—</td>
+                  <td>—</td>
+                </tr>
+                <tr data-org="MMB">
+                  <td>6</td>
+                  <td><span class="org-badge mmb">MMB</span></td>
+                  <td>—</td>
+                  <td>—</td>
+                </tr>
+                <tr data-org="Irrigation">
+                  <td>7</td>
+                  <td><span class="org-badge irr">Irrigation</span></td>
+                  <td>—</td>
+                  <td>Irrigation, Ratnagiri / Chiplun</td>
+                </tr>
+                <tr data-org="NH">
+                  <td>8</td>
+                  <td><span class="org-badge nh">NH</span></td>
+                  <td>—</td>
+                  <td>—</td>
+                </tr>
+                <tr data-org="Harbour">
+                  <td>9</td>
+                  <td><span class="org-badge harbour">Harbour</span></td>
+                  <td>—</td>
+                  <td>—</td>
+                </tr>
+                <tr data-org="Police Housing">
+                  <td>10</td>
+                  <td><span class="org-badge police">Police Housing</span></td>
+                  <td>—</td>
+                  <td>—</td>
+                </tr>
+                <tr data-org="Health">
+                  <td>11</td>
+                  <td><span class="org-badge health">Health</span></td>
+                  <td>—</td>
+                  <td>—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="form-section border-top">
+            <div class="section-label"><i class="bi bi-credit-card"></i> Head of Account Codes</div>
+            <div class="d-flex flex-wrap gap-2">
+              <span class="badge rounded-pill" style="background:#1a3a5c;color:#fff;font-size:0.78rem;padding:6px 12px;">Affidavit (English) — <strong>3054</strong></span>
+              <span class="badge rounded-pill" style="background:#2560a0;color:#fff;font-size:0.78rem;padding:6px 12px;">Affidavit (Marathi) — <strong>5054</strong></span>
+              <span class="badge rounded-pill" style="background:#e8a020;color:#1a3a5c;font-size:0.78rem;padding:6px 12px;font-weight:700;">Undertaking (Marathi) — <strong>876</strong></span>
+              <span class="badge rounded-pill" style="background:#4a7ec4;color:#fff;font-size:0.78rem;padding:6px 12px;">Undertaking (English) — <strong>1358</strong></span>
+              <span class="badge rounded-pill" style="background:#6b21a8;color:#fff;font-size:0.78rem;padding:6px 12px;">Declaration — <strong>2515</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- ================= OFFICE INFORMATION ================= -->
+
+<div class="col-md-6 mb-3">
+
+    <label class="form-label fw-semibold">
+        Name of Office & Place
+    </label>
+
+    <select class="form-select" id="officeName" required>
+
+        <option value="">-- Select Office --</option>
+
+        <option value="pwd">Public Works Division, Ratnagiri / Chiplun</option>
+
+        <option value="zp">Z P PWD, Ratnagiri / Chiplun</option>
+
+        <option value="midc">MIDC</option>
+
+        <option value="mmb">MMB</option>
+
+        <option value="irrigation">Irrigation, Ratnagiri / Chiplun</option>
+
+        <option value="nh">National Highway (NH)</option>
+
+        <option value="harbour">Harbour</option>
+
+    </select>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+    <label class="form-label fw-semibold">
+
+        Head of Account
+
+    </label>
+
+    <select class="form-select" id="headOfAccount" required>
+
+        <option value="">-- Select Head of Account --</option>
+
+        <option value="3054">3054</option>
+
+        <option value="5054">5054</option>
+
+        <option value="876">876</option>
+
+        <option value="1358">1358</option>
+
+        <option value="2515">2515</option>
+
+    </select>
+
+</div>
+    <!-- TAB 2 — LEGAL DOCUMENTS -->
+    <div class="tab-panel" id="tab1">
+      <div class="card-head"><i class="bi bi-file-earmark-text"></i> Legal Documents &amp; Certificates</div>
+      <div class="doc-grid">
+        <a class="doc-pill" href="#">
+          <i class="bi bi-file-earmark-person"></i>
+          Affidavit Format (English)
+          <span class="doc-code">3054</span>
+        </a>
+        <a class="doc-pill" href="#">
+          <i class="bi bi-file-earmark-person"></i>
+          Affidavit Format (Marathi)
+          <span class="doc-code">5054</span>
+        </a>
+        <a class="doc-pill" href="#">
+          <i class="bi bi-file-earmark-check"></i>
+          Undertaking (Marathi)
+          <span class="doc-code">876</span>
+        </a>
+        <a class="doc-pill" href="#">
+          <i class="bi bi-file-earmark-check"></i>
+          Undertaking (English)
+          <span class="doc-code">1358</span>
+        </a>
+        <a class="doc-pill" href="#">
+          <i class="bi bi-file-earmark-ruled"></i>
+          Declaration
+          <span class="doc-code">2515</span>
+        </a>
+        <a class="doc-pill" href="#">
+          <i class="bi bi-hammer"></i>
+          Machinery Hire Agreement
+        </a>
+        <a class="doc-pill" href="#">
+          <i class="bi bi-x-circle"></i>
+          Non Listing Agreement
+        </a>
+        <a class="doc-pill" href="#">
+          <i class="bi bi-geo-alt"></i>
+          Geo Tagging Certificate
+        </a>
+        <a class="doc-pill" href="#">
+          <i class="bi bi-clipboard2-check"></i>
+          Certificate — Study of Worksite
+        </a>
+        <a class="doc-pill" href="#">
+          <i class="bi bi-person-x"></i>
+          Declaration — Non Employment of Ex-MIDC
+        </a>
+        <a class="doc-pill" href="#">
+          <i class="bi bi-pen"></i>
+          Agreement
+        </a>
+        <a class="doc-pill" href="#">
+          <i class="bi bi-card-list"></i>
+          Details of Bidder
+        </a>
+      </div>
+
+      <div class="form-section border-top">
+        <div class="section-label"><i class="bi bi-upload"></i> Upload Signed Documents</div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Select Document Type</label>
+            <select class="form-select">
+              <option>-- Select --</option>
+              <option>Affidavit Format (English)</option>
+              <option>Affidavit Format (Marathi)</option>
+              <option>Undertaking (Marathi)</option>
+              <option>Undertaking (English)</option>
+              <option>Declaration</option>
+              <option>Agreement</option>
+              <option>Geo Tagging Certificate</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Upload File (PDF / JPG)</label>
+            <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3 — TYPE OF WORK -->
+    <div class="tab-panel" id="tab2">
+      <div class="card-head"><i class="bi bi-tools"></i> Type of Work</div>
+      <div class="form-section">
+        <div class="section-label"><i class="bi bi-check2-square"></i> Select Work Category (one or more)</div>
+        <div class="work-grid" id="workGrid">
+          <div class="work-chip" onclick="toggleChip(this)"><i class="bi bi-water"></i> Construction of Bridge</div>
+          <div class="work-chip" onclick="toggleChip(this)"><i class="bi bi-building"></i> Construction of Building</div>
+          <div class="work-chip" onclick="toggleChip(this)"><i class="bi bi-wrench-adjustable"></i> Repairs of Building</div>
+          <div class="work-chip" onclick="toggleChip(this)"><i class="bi bi-arrow-repeat"></i> Repairs of Bridge</div>
+          <div class="work-chip" onclick="toggleChip(this)"><i class="bi bi-sign-turn-right"></i> New Construction of Road</div>
+          <div class="work-chip" onclick="toggleChip(this)"><i class="bi bi-cone-striped"></i> Bitumen Road</div>
+          <div class="work-chip" onclick="toggleChip(this)"><i class="bi bi-grid-3x3"></i> Concrete Road</div>
+          <div class="work-chip" onclick="toggleChip(this)"><i class="bi bi-lamp"></i> Furniture</div>
+          <div class="work-chip" onclick="toggleChip(this)"><i class="bi bi-bricks"></i> Retaining Wall</div>
+          <div class="work-chip" onclick="toggleChip(this)"><i class="bi bi-layers"></i> Earth Work</div>
+        </div>
+
+        <div class="mt-3 p-3 rounded" style="background:var(--gov-light);border:1px solid var(--gov-border);">
+          <p class="mb-1" style="font-size:0.75rem;font-weight:600;color:#4a6180;text-transform:uppercase;letter-spacing:.06em;">Selected Works</p>
+          <div id="selectedWorks" style="font-size:0.85rem;color:var(--gov-blue);">
+            <em style="color:#94a3b8;">No work type selected yet.</em>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section border-top">
+        <div class="section-label"><i class="bi bi-person-vcard"></i> Name of Officer</div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Officer Name</label>
+            <input type="text" class="form-control" placeholder="Full name of responsible officer"/>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Designation</label>
+            <input type="text" class="form-control" placeholder="e.g. Executive Engineer"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4 — BIDDER DETAILS -->
+    <div class="tab-panel" id="tab3">
+      <div class="card-head"><i class="bi bi-person-badge"></i> Details of Bidder</div>
+      <div class="form-section">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Bidder / Firm Name</label>
+            <input type="text" class="form-control" placeholder="Registered firm or individual name"/>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Registration Number</label>
+            <input type="text" class="form-control" placeholder="Contractor reg. number"/>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Class of Contractor</label>
+            <select class="form-select">
+              <option>-- Select --</option>
+              <option>Class I</option>
+              <option>Class II</option>
+              <option>Class III</option>
+              <option>Class IV</option>
+              <option>Class V</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">PAN Number</label>
+            <input type="text" class="form-control" placeholder="ABCDE1234F"/>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">GST Number</label>
+            <input type="text" class="form-control" placeholder="27XXXXX..."/>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Registered Address</label>
+            <textarea class="form-control" rows="2" placeholder="Full address of the bidder/firm"></textarea>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Contact Person</label>
+            <input type="text" class="form-control" placeholder="Authorised signatory name"/>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Mobile</label>
+            <input type="tel" class="form-control" placeholder="+91"/>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" placeholder="bidder@example.com"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ Action Bar ══ -->
+    <div class="action-bar">
+      <button class="btn btn-gov-outline" onclick="prevTab()"><i class="bi bi-arrow-left me-1"></i>Previous</button>
+      <button class="btn btn-gov" onclick="nextTab()">Next <i class="bi bi-arrow-right ms-1"></i></button>
+      <button class="btn btn-accent ms-auto" onclick="submitForm()"><i class="bi bi-send-fill me-1"></i>Submit Tender Info</button>
+      <button class="btn btn-gov-outline" onclick="resetForm()"><i class="bi bi-arrow-counterclockwise me-1"></i>Reset</button>
+    </div>
+  </div>
+
+  <p class="text-center mt-3 mb-0" style="font-size:0.72rem;color:#8aa0b8;letter-spacing:0.05em;">
+    MAHARASHTRA PUBLIC WORKS DEPARTMENT &nbsp;|&nbsp; e-TENDERING PORTAL &nbsp;|&nbsp; FOR OFFICIAL USE ONLY
+  </p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  let currentTab = 0;
+
+  function showTab(n) {
+    document.querySelectorAll('.tab-panel').forEach((p, i) => {
+      p.classList.toggle('active', i === n);
+    });
+    document.querySelectorAll('.step-item').forEach((s, i) => {
+      s.classList.remove('active', 'done');
+      if (i === n) s.classList.add('active');
+      if (i < n) s.classList.add('done');
+    });
+    currentTab = n;
+  }
+
+  function nextTab() {
+    if (currentTab < 3) showTab(currentTab + 1);
+  }
+  function prevTab() {
+    if (currentTab > 0) showTab(currentTab - 1);
+  }
+
+  function filterOrg() {
+    const val = document.getElementById('orgSelect').value;
+    document.querySelectorAll('#orgTable tbody tr').forEach(row => {
+      row.style.display = (!val || row.dataset.org === val) ? '' : 'none';
+    });
+  }
+
+  function toggleChip(el) {
+    el.classList.toggle('active');
+    updateSelectedWorks();
+  }
+
+  function updateSelectedWorks() {
+    const active = [...document.querySelectorAll('.work-chip.active')].map(c => c.innerText.trim());
+    const box = document.getElementById('selectedWorks');
+    box.innerHTML = active.length
+      ? active.map(w => `<span class="badge me-1 mb-1" style="background:var(--gov-blue);font-size:0.78rem;padding:5px 10px;">${w}</span>`).join('')
+      : '<em style="color:#94a3b8;">No work type selected yet.</em>';
+  }
+
+  function submitForm() {
+    alert('✅ Tender information submitted successfully!\n\nPlease retain the acknowledgement number for your records.');
+  }
+
+  function resetForm() {
+    if (confirm('Reset all fields? This cannot be undone.')) {
+      document.querySelectorAll('input, select, textarea').forEach(el => el.value = '');
+      document.querySelectorAll('.work-chip').forEach(c => c.classList.remove('active'));
+      updateSelectedWorks();
+      showTab(0);
+    }
+  }
+</script>
+</body>
+</html>
