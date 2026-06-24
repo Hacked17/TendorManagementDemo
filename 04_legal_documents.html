@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>M5 — Legal Documents</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+  <style>
+    :root{--gov-blue:#1a3a5c;--gov-mid:#2560a0;--gov-light:#eef4fb;--gov-border:#c5d6ea;--accent:#e8a020;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1e2d3d;display:flex;flex-direction:column;min-height:100vh;}
+    .top-header{background:linear-gradient(135deg,var(--gov-blue),var(--gov-mid));color:#fff;padding:0 1.5rem;height:60px;display:flex;align-items:center;gap:1rem;border-bottom:4px solid var(--accent);position:sticky;top:0;z-index:1000;box-shadow:0 3px 12px rgba(0,0,0,.2);}
+    .top-header .logo{width:40px;height:40px;background:rgba(255,255,255,.15);border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+    .top-header h1{font-size:1rem;font-weight:700;}.top-header p{font-size:.66rem;opacity:.75;text-transform:uppercase;letter-spacing:.05em;}
+    .back-btn{margin-left:auto;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:6px;padding:5px 14px;font-size:.78rem;text-decoration:none;display:flex;align-items:center;gap:.4rem;}
+    .back-btn:hover{background:rgba(255,255,255,.25);color:#fff;}
+    .hamburger{background:none;border:none;color:#fff;font-size:1.3rem;cursor:pointer;display:none;}
+    .body-wrap{display:flex;flex:1;}
+    .sidebar{width:240px;background:var(--gov-blue);flex-shrink:0;display:flex;flex-direction:column;overflow-y:auto;position:sticky;top:60px;height:calc(100vh - 60px);}
+    .sidebar-label{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);padding:10px 16px 3px;}
+    .sidebar-link{display:flex;align-items:center;gap:.6rem;padding:8px 16px;font-size:.8rem;color:rgba(255,255,255,.75);text-decoration:none;border-left:3px solid transparent;transition:all .15s;}
+    .sidebar-link i{font-size:.95rem;opacity:.8;}
+    .sidebar-link:hover{background:rgba(255,255,255,.08);color:#fff;border-left-color:var(--accent);}
+    .sidebar-link.active{background:rgba(255,255,255,.13);color:#fff;border-left-color:var(--accent);font-weight:600;}
+    .sidebar-link .mn{margin-left:auto;background:var(--accent);color:var(--gov-blue);font-size:.62rem;font-weight:700;padding:1px 6px;border-radius:8px;}
+    .sidebar-divider{border-color:rgba(255,255,255,.1);margin:2px 0;}
+    .main{flex:1;padding:1.5rem;overflow-y:auto;}
+    .page-hd{background:#fff;border:1px solid var(--gov-border);border-radius:10px;padding:1rem 1.2rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:1rem;box-shadow:0 2px 8px rgba(26,58,92,.06);}
+    .page-hd .icon{width:46px;height:46px;background:var(--gov-light);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:var(--gov-mid);border:1px solid var(--gov-border);}
+    .page-hd h2{font-size:1.05rem;font-weight:700;color:var(--gov-blue);margin-bottom:2px;}.page-hd p{font-size:.74rem;color:#6b8aaa;margin:0;}
+    .nav-tabs-gov{border-bottom:2px solid var(--gov-border);margin-bottom:1.2rem;display:flex;gap:0;overflow-x:auto;}
+    .nav-tab{padding:.55rem 1.1rem;font-size:.78rem;font-weight:600;color:#6b8aaa;border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:all .15s;display:flex;align-items:center;gap:.35rem;}
+    .nav-tab:hover{color:var(--gov-blue);}.nav-tab.active{color:var(--gov-blue);border-bottom-color:var(--accent);}
+    .tab-panel{display:none;}.tab-panel.active{display:block;}
+    .card-gov{background:#fff;border:1px solid var(--gov-border);border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(26,58,92,.06);margin-bottom:1.2rem;}
+    .card-hd{background:var(--gov-light);border-bottom:1px solid var(--gov-border);padding:.6rem 1rem;font-size:.74rem;font-weight:700;color:var(--gov-blue);text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;justify-content:space-between;gap:.4rem;}
+    .card-hd i{color:var(--accent);}.card-body-p{padding:1rem;}
+    .sec-lbl{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gov-mid);margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem;}
+    .sec-lbl::after{content:'';flex:1;height:1px;background:var(--gov-border);}
+    .tbl{width:100%;border-collapse:collapse;}
+    .tbl th{background:var(--gov-blue);color:#fff;font-size:.7rem;font-weight:600;padding:8px 10px;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;}
+    .tbl td{padding:7px 10px;font-size:.82rem;border-bottom:1px solid #e8eef5;vertical-align:middle;}
+    .tbl tr:last-child td{border-bottom:none;}.tbl tr:nth-child(even) td{background:#f7fafd;}.tbl tr:hover td{background:#ebf3fb;}
+    .form-label{font-size:.72rem;font-weight:600;color:#4a6180;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem;}
+    .form-control,.form-select{border:1.5px solid var(--gov-border);border-radius:6px;font-size:.85rem;}
+    .form-control:focus,.form-select:focus{border-color:var(--gov-mid);box-shadow:0 0 0 3px rgba(37,96,160,.1);}
+    .btn-gov{background:var(--gov-blue);color:#fff;border:none;border-radius:6px;padding:.45rem 1.2rem;font-size:.82rem;font-weight:600;cursor:pointer;}
+    .btn-gov:hover{background:var(--gov-mid);}
+    .btn-out{background:transparent;color:var(--gov-blue);border:1.5px solid var(--gov-border);border-radius:6px;padding:.45rem 1.1rem;font-size:.82rem;font-weight:600;cursor:pointer;}
+    .btn-out:hover{background:var(--gov-blue);color:#fff;border-color:var(--gov-blue);}
+    .btn-acc{background:var(--accent);color:var(--gov-blue);border:none;border-radius:6px;padding:.45rem 1.2rem;font-size:.82rem;font-weight:700;cursor:pointer;}
+    .action-bar{background:#fff;border-top:1px solid var(--gov-border);padding:.85rem 1.2rem;display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;}
+    .doc-card{background:#fff;border:1px solid var(--gov-border);border-radius:8px;padding:.85rem 1rem;display:flex;align-items:flex-start;gap:.75rem;transition:box-shadow .15s,border-color .15s;cursor:pointer;}
+    .doc-card:hover{box-shadow:0 4px 14px rgba(26,58,92,.12);border-color:var(--gov-mid);}
+    .doc-icon{width:42px;height:42px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+    .doc-card h6{font-size:.83rem;font-weight:700;color:var(--gov-blue);margin-bottom:3px;}
+    .doc-card p{font-size:.72rem;color:#6b8aaa;margin:0;}
+    .doc-code{font-size:.65rem;font-weight:700;background:var(--gov-mid);color:#fff;padding:2px 8px;border-radius:4px;margin-top:.35rem;display:inline-block;}
+    .st-valid{background:#dcfce7;color:#166534;}.st-pending{background:#fef9c3;color:#854d0e;}.st-missing{background:#fef2f2;color:#991b1b;}
+    .status-badge{display:inline-block;padding:2px 9px;border-radius:4px;font-size:.7rem;font-weight:700;}
+    .upload-zone{border:2px dashed var(--gov-border);border-radius:8px;padding:1.2rem;text-align:center;cursor:pointer;background:var(--gov-light);}
+    .upload-zone:hover{border-color:var(--gov-mid);background:#dbeafe;}
+    .upload-zone i{font-size:1.8rem;color:var(--gov-mid);display:block;margin-bottom:.3rem;}
+    .upload-zone p{font-size:.78rem;color:#6b8aaa;margin:0;}
+    @media(max-width:991px){.sidebar{display:none;position:fixed;top:60px;left:0;height:calc(100vh - 60px);z-index:999;}.sidebar.open{display:flex;}.hamburger{display:block;}}
+  </style>
+</head>
+<body>
+<header class="top-header">
+  <button class="hamburger" onclick="document.getElementById('sb').classList.toggle('open')"><i class="bi bi-list"></i></button>
+  <div class="logo"><i class="bi bi-building-fill-gear"></i></div>
+  <div><h1>Module 5 — Legal Document Information</h1><p>Agency Documents · e-Tender Management System</p></div>
+  <a href="00_dashboard.html" class="back-btn"><i class="bi bi-arrow-left"></i> Dashboard</a>
+</header>
+<div class="body-wrap">
+  <nav class="sidebar" id="sb">
+    <div style="padding:8px 0 4px;">
+      <div class="sidebar-label">Master Data</div>
+      <a class="sidebar-link" href="01_organization_info.html"><i class="bi bi-diagram-3-fill"></i> Organisation Info <span class="mn">M1</span></a>
+      <a class="sidebar-link" href="02_registration_info.html"><i class="bi bi-person-badge-fill"></i> Registration Info <span class="mn">M2</span></a>
+      <a class="sidebar-link" href="03_agency_info.html"><i class="bi bi-buildings-fill"></i> Agency Information <span class="mn">M4</span></a>
+    </div>
+    <hr class="sidebar-divider"/>
+    <div style="padding:4px 0;">
+      <div class="sidebar-label">Agency Documents</div>
+      <a class="sidebar-link active" href="04_legal_documents.html"><i class="bi bi-file-earmark-lock2-fill"></i> Legal Documents <span class="mn">M5</span></a>
+      <a class="sidebar-link" href="05_hired_machinery.html"><i class="bi bi-truck-front-fill"></i> Hired Machinery <span class="mn">M6</span></a>
+      <a class="sidebar-link" href="06_qualifying_docs.html"><i class="bi bi-patch-check-fill"></i> Qualifying Docs <span class="mn">M7</span></a>
+    </div>
+    <hr class="sidebar-divider"/>
+    <div style="padding:4px 0;">
+      <div class="sidebar-label">Tender Process</div>
+      <a class="sidebar-link" href="07_tender_information.html"><i class="bi bi-newspaper"></i> Published Tender <span class="mn">M8</span></a>
+      <a class="sidebar-link" href="08_checklist.html"><i class="bi bi-clipboard2-check-fill"></i> Checklist <span class="mn">M9</span></a>
+      <a class="sidebar-link" href="09_agency_selection.html"><i class="bi bi-person-check-fill"></i> Agency Selection <span class="mn">M10</span></a>
+    </div>
+    <hr class="sidebar-divider"/>
+    <div style="padding:4px 0;">
+      <div class="sidebar-label">Post-Tender</div>
+      <a class="sidebar-link" href="10_after_submission.html"><i class="bi bi-send-fill"></i> After Submission <span class="mn">M12</span></a>
+      <a class="sidebar-link" href="11_status_bid.html"><i class="bi bi-bar-chart-fill"></i> Status of Bid <span class="mn">M13</span></a>
+      <a class="sidebar-link" href="12_status_emd.html"><i class="bi bi-bank2"></i> Status of EMD <span class="mn">M14</span></a>
+      <a class="sidebar-link" href="13_reports.html"><i class="bi bi-file-bar-graph-fill"></i> Reports <span class="mn">M15</span></a>
+    </div>
+    <hr class="sidebar-divider"/>
+    <a class="sidebar-link" href="00_dashboard.html"><i class="bi bi-house-fill"></i> Dashboard</a>
+  </nav>
+
+  <main class="main">
+    <div class="page-hd">
+      <div class="icon"><i class="bi bi-file-earmark-lock2-fill"></i></div>
+      <div><h2>Legal Document Information &nbsp;<span style="background:#e0f2fe;color:#075985;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:4px;">M5</span></h2>
+      <p>Org-wise legal document formats, required documents per agency, data entry and PDF upload.</p></div>
+      <div class="ms-auto"><button class="btn-acc" onclick="switchTab(2,document.querySelectorAll('.nav-tab')[2])"><i class="bi bi-plus-lg"></i> Add Document</button></div>
+    </div>
+
+    <div class="nav-tabs-gov">
+      <button class="nav-tab active" onclick="switchTab(0,this)"><i class="bi bi-grid-3x3-gap"></i> Document Formats</button>
+      <button class="nav-tab" onclick="switchTab(1,this)"><i class="bi bi-table"></i> Agency Doc Status</button>
+      <button class="nav-tab" onclick="switchTab(2,this)"><i class="bi bi-pencil-square"></i> Data Entry</button>
+      <button class="nav-tab" onclick="switchTab(3,this)"><i class="bi bi-file-earmark-arrow-up"></i> Upload PDFs</button>
+    </div>
+
+    <!-- TAB 0: DOCUMENT FORMATS -->
+    <div class="tab-panel active" id="tp0">
+      <div class="row g-3">
+        <div class="col-md-4 col-sm-6">
+          <div class="doc-card">
+            <div class="doc-icon" style="background:#dbeafe;"><i class="bi bi-file-earmark-person" style="color:#2560a0;"></i></div>
+            <div><h6>Affidavit Format (English)</h6><p>Stamp paper affidavit in English. Required by all organisations.</p><span class="doc-code">HOA: 3054</span></div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="doc-card">
+            <div class="doc-icon" style="background:#dcfce7;"><i class="bi bi-file-earmark-person" style="color:#16a34a;"></i></div>
+            <div><h6>Affidavit Format (Marathi)</h6><p>Stamp paper affidavit in Marathi. Required for PWD, ZP, Irrigation, MC, MMB.</p><span class="doc-code">HOA: 5054</span></div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="doc-card">
+            <div class="doc-icon" style="background:#fef9c3;"><i class="bi bi-file-earmark-check" style="color:#ca8a04;"></i></div>
+            <div><h6>Undertaking (Marathi)</h6><p>Letter pad undertaking in Marathi. Required by all organisations.</p><span class="doc-code">HOA: 876</span></div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="doc-card">
+            <div class="doc-icon" style="background:#e0f2fe;"><i class="bi bi-file-earmark-check" style="color:#075985;"></i></div>
+            <div><h6>Undertaking (English)</h6><p>Letter pad undertaking in English. Required by all organisations.</p><span class="doc-code">HOA: 1358</span></div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="doc-card">
+            <div class="doc-icon" style="background:#f3e8ff;"><i class="bi bi-file-earmark-ruled" style="color:#7c3aed;"></i></div>
+            <div><h6>Declaration</h6><p>Formal declaration on letter pad. Required by all organisations.</p><span class="doc-code">HOA: 2515</span></div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="doc-card">
+            <div class="doc-icon" style="background:#fff7ed;"><i class="bi bi-hammer" style="color:#ea580c;"></i></div>
+            <div><h6>Machinery Hire Agreement</h6><p>Stamp paper agreement for hired machinery. All organisations.</p><div style="font-size:.68rem;color:#94a3b8;margin-top:.3rem;">Stamp Paper Required</div></div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="doc-card">
+            <div class="doc-icon" style="background:#fce7f3;"><i class="bi bi-x-circle" style="color:#9d174d;"></i></div>
+            <div><h6>Non Listing Agreement</h6><p>Agreement for not listing blacklisted sub-contractors.</p><div style="font-size:.68rem;color:#94a3b8;margin-top:.3rem;">Letter Pad</div></div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="doc-card">
+            <div class="doc-icon" style="background:#ecfdf5;"><i class="bi bi-geo-alt" style="color:#059669;"></i></div>
+            <div><h6>Geo Tagging Certificate</h6><p>Certificate of geo-tagged site inspection. All organisations.</p><div style="font-size:.68rem;color:#94a3b8;margin-top:.3rem;">Official Letter</div></div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="doc-card">
+            <div class="doc-icon" style="background:#ede9fe;"><i class="bi bi-clipboard2-check" style="color:#4c1d95;"></i></div>
+            <div><h6>Certificate — Study of Worksite</h6><p>Contractor's certificate of site study before tendering.</p><div style="font-size:.68rem;color:#94a3b8;margin-top:.3rem;">Letter Pad</div></div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="doc-card">
+            <div class="doc-icon" style="background:#fef2f2;"><i class="bi bi-person-x" style="color:#991b1b;"></i></div>
+            <div><h6>Non Employment (Ex-MIDC)</h6><p>Declaration of non-employment of Ex-MIDC employees. MIDC only.</p><div style="font-size:.68rem;color:#94a3b8;margin-top:.3rem;">Stamp Paper</div></div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="doc-card">
+            <div class="doc-icon" style="background:#f0fdf4;"><i class="bi bi-pen" style="color:#14532d;"></i></div>
+            <div><h6>Agreement</h6><p>General contract agreement on stamp paper. All organisations.</p><div style="font-size:.68rem;color:#94a3b8;margin-top:.3rem;">Stamp Paper Required</div></div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="doc-card">
+            <div class="doc-icon" style="background:#eef4fb;"><i class="bi bi-card-list" style="color:#2560a0;"></i></div>
+            <div><h6>Details of Bidder</h6><p>Complete bidder information sheet on letter pad. All organisations.</p><div style="font-size:.68rem;color:#94a3b8;margin-top:.3rem;">Letter Pad</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 1: AGENCY DOC STATUS -->
+    <div class="tab-panel" id="tp1">
+      <div class="card-gov">
+        <div class="card-hd">
+          <span><i class="bi bi-table"></i> Agency-wise Document Status</span>
+          <div class="d-flex gap-2">
+            <select class="form-select form-select-sm" style="width:auto;font-size:.75rem;" onchange="filterDocOrg(this.value)">
+              <option value="">All Agencies</option><option>M/s Sawant Infra Pvt Ltd</option><option>M/s Desai Construction</option><option>M/s Patil Builders</option>
+            </select>
+            <input class="form-control form-control-sm" style="width:150px;font-size:.75rem;" placeholder="Search…" oninput="searchDoc(this.value)"/>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="tbl" id="docStatusTbl">
+            <thead>
+              <tr><th>Agency</th><th>Org</th><th>Affidavit (Eng)</th><th>Affidavit (Mar)</th><th>Undertaking (Mar)</th><th>Undertaking (Eng)</th><th>Declaration</th><th>Machinery Agr.</th><th>Non Listing</th><th>Geo Tag</th><th>Worksite Cert</th><th>Agreement</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>M/s Sawant Infra</strong></td><td>PWD</td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-pending">Pending</span></td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-valid">✓ Done</span></td></tr>
+              <tr><td><strong>M/s Desai Construction</strong></td><td>ZP</td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-pending">Pending</span></td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-missing">Missing</span></td><td><span class="status-badge st-valid">✓ Done</span></td></tr>
+              <tr><td><strong>M/s Patil Builders</strong></td><td>MIDC</td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-missing">N/A</span></td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-pending">Pending</span></td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-valid">✓ Done</span></td><td><span class="status-badge st-missing">N/A</span></td><td><span class="status-badge st-pending">Pending</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="action-bar"><button class="btn-gov ms-auto"><i class="bi bi-download"></i> Export Status</button></div>
+      </div>
+    </div>
+
+    <!-- TAB 2: DATA ENTRY -->
+    <div class="tab-panel" id="tp2">
+      <div class="card-gov">
+        <div class="card-hd"><span><i class="bi bi-pencil-square"></i> Legal Document Data Entry</span></div>
+        <div class="card-body-p">
+          <div class="row g-3 mb-3">
+            <div class="col-md-4"><label class="form-label">Select Agency</label><select class="form-select"><option value="">-- Select Agency --</option><option>M/s Sawant Infra Pvt Ltd</option><option>M/s Desai Construction</option><option>M/s Patil Builders</option><option>M/s Kulkarni &amp; Associates</option></select></div>
+            <div class="col-md-4"><label class="form-label">Organisation</label><select class="form-select"><option value="">-- Select --</option><option>PWD</option><option>ZP</option><option>Tribal</option><option>MIDC</option><option>MC</option><option>MMB</option><option>Irrigation</option><option>NH</option><option>Harbour</option></select></div>
+            <div class="col-md-4"><label class="form-label">Tender ID (if applicable)</label><input class="form-control" placeholder="e.g. TID-2024-087"/></div>
+          </div>
+          <hr style="border-color:var(--gov-border);margin:1rem 0;"/>
+
+          <!-- Affidavit English -->
+          <div class="sec-lbl"><i class="bi bi-file-earmark-person"></i> Affidavit Format (English) — HOA: 3054</div>
+          <div class="row g-2 mb-3">
+            <div class="col-md-3"><label class="form-label">Notary Name</label><input class="form-control form-control-sm" placeholder="Notary full name"/></div>
+            <div class="col-md-3"><label class="form-label">Notary Reg. No.</label><input class="form-control form-control-sm" placeholder="Reg. number"/></div>
+            <div class="col-md-3"><label class="form-label">Date of Notarisation</label><input class="form-control form-control-sm" type="date"/></div>
+            <div class="col-md-3"><label class="form-label">Stamp Paper Value (₹)</label><input class="form-control form-control-sm" placeholder="e.g. 500"/></div>
+          </div>
+
+          <!-- Affidavit Marathi -->
+          <div class="sec-lbl"><i class="bi bi-file-earmark-person"></i> Affidavit Format (Marathi) — HOA: 5054</div>
+          <div class="row g-2 mb-3">
+            <div class="col-md-3"><label class="form-label">Notary Name</label><input class="form-control form-control-sm" placeholder="Notary full name"/></div>
+            <div class="col-md-3"><label class="form-label">Notary Reg. No.</label><input class="form-control form-control-sm" placeholder="Reg. number"/></div>
+            <div class="col-md-3"><label class="form-label">Date of Notarisation</label><input class="form-control form-control-sm" type="date"/></div>
+            <div class="col-md-3"><label class="form-label">Stamp Paper Value (₹)</label><input class="form-control form-control-sm" placeholder="e.g. 500"/></div>
+          </div>
+
+          <!-- Undertaking -->
+          <div class="sec-lbl"><i class="bi bi-file-earmark-check"></i> Undertaking (Marathi / English) — HOA: 876 / 1358</div>
+          <div class="row g-2 mb-3">
+            <div class="col-md-3"><label class="form-label">Language</label><select class="form-select form-select-sm"><option>Marathi</option><option>English</option><option>Both</option></select></div>
+            <div class="col-md-3"><label class="form-label">Date</label><input class="form-control form-control-sm" type="date"/></div>
+            <div class="col-md-3"><label class="form-label">Signed By</label><input class="form-control form-control-sm" placeholder="Name"/></div>
+            <div class="col-md-3"><label class="form-label">Designation</label><input class="form-control form-control-sm" placeholder="Proprietor / Partner…"/></div>
+          </div>
+
+          <!-- Declaration -->
+          <div class="sec-lbl"><i class="bi bi-file-earmark-ruled"></i> Declaration — HOA: 2515</div>
+          <div class="row g-2 mb-3">
+            <div class="col-md-4"><label class="form-label">Declaration Date</label><input class="form-control form-control-sm" type="date"/></div>
+            <div class="col-md-4"><label class="form-label">Declared By</label><input class="form-control form-control-sm" placeholder="Name of declarant"/></div>
+            <div class="col-md-4"><label class="form-label">Witness Name</label><input class="form-control form-control-sm" placeholder="Witness name"/></div>
+          </div>
+
+          <!-- Geo Tagging -->
+          <div class="sec-lbl"><i class="bi bi-geo-alt"></i> Geo Tagging Certificate</div>
+          <div class="row g-2 mb-3">
+            <div class="col-md-4"><label class="form-label">Date of Geo Tagging</label><input class="form-control form-control-sm" type="date"/></div>
+            <div class="col-md-4"><label class="form-label">Latitude</label><input class="form-control form-control-sm" placeholder="e.g. 17.0045"/></div>
+            <div class="col-md-4"><label class="form-label">Longitude</label><input class="form-control form-control-sm" placeholder="e.g. 73.3102"/></div>
+          </div>
+
+          <!-- Non Listing -->
+          <div class="sec-lbl"><i class="bi bi-x-circle"></i> Non Listing Agreement</div>
+          <div class="row g-2 mb-3">
+            <div class="col-md-4"><label class="form-label">Agreement Date</label><input class="form-control form-control-sm" type="date"/></div>
+            <div class="col-md-4"><label class="form-label">Stamp Paper Value (₹)</label><input class="form-control form-control-sm" placeholder="e.g. 200"/></div>
+            <div class="col-md-4"><label class="form-label">Signed By</label><input class="form-control form-control-sm" placeholder="Name"/></div>
+          </div>
+
+          <!-- Worksite Certificate -->
+          <div class="sec-lbl"><i class="bi bi-clipboard2-check"></i> Certificate — Study of Worksite</div>
+          <div class="row g-2 mb-3">
+            <div class="col-md-4"><label class="form-label">Date of Site Visit</label><input class="form-control form-control-sm" type="date"/></div>
+            <div class="col-md-4"><label class="form-label">Site Location</label><input class="form-control form-control-sm" placeholder="Work site location"/></div>
+            <div class="col-md-4"><label class="form-label">Accompanied By</label><input class="form-control form-control-sm" placeholder="Officer name"/></div>
+          </div>
+        </div>
+        <div class="action-bar">
+          <button class="btn-out"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+          <button class="btn-gov" onclick="showSaved('sm1')"><i class="bi bi-floppy"></i> Save Legal Documents</button>
+          <span id="sm1" style="font-size:.78rem;color:#16a34a;display:none;"><i class="bi bi-check-circle-fill"></i> Saved!</span>
+          <button class="btn-acc ms-auto" onclick="switchTab(3,document.querySelectorAll('.nav-tab')[3])">Upload PDFs <i class="bi bi-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: UPLOAD PDFs -->
+    <div class="tab-panel" id="tp3">
+      <div class="card-gov">
+        <div class="card-hd"><span><i class="bi bi-file-earmark-arrow-up"></i> Upload Legal Document PDFs</span></div>
+        <div class="card-body-p">
+          <div class="row g-3 mb-3">
+            <div class="col-md-4"><label class="form-label">Select Agency</label><select class="form-select"><option value="">-- Select Agency --</option><option>M/s Sawant Infra Pvt Ltd</option><option>M/s Desai Construction</option><option>M/s Patil Builders</option></select></div>
+            <div class="col-md-4"><label class="form-label">Document Type</label>
+              <select class="form-select">
+                <option>-- Select --</option>
+                <option>Affidavit Format (English)</option><option>Affidavit Format (Marathi)</option>
+                <option>Undertaking (Marathi)</option><option>Undertaking (English)</option>
+                <option>Declaration</option><option>Machinery Hire Agreement</option>
+                <option>Non Listing Agreement</option><option>Geo Tagging Certificate</option>
+                <option>Worksite Certificate</option><option>Non Employment (Ex-MIDC)</option>
+                <option>Agreement</option><option>Details of Bidder</option>
+              </select>
+            </div>
+            <div class="col-md-4"><label class="form-label">Document Date</label><input class="form-control" type="date"/></div>
+          </div>
+          <div class="upload-zone mb-3" onclick="document.getElementById('legalFile').click()">
+            <i class="bi bi-cloud-arrow-up-fill"></i>
+            <p><strong>Click to upload PDF</strong> — Max 5MB</p>
+            <input type="file" id="legalFile" style="display:none;" accept=".pdf,.jpg,.png" onchange="handleUpload(this)"/>
+          </div>
+          <div class="sec-lbl mt-2"><i class="bi bi-folder2-open"></i> Uploaded Legal Documents</div>
+          <table class="tbl">
+            <thead><tr><th>#</th><th>Agency</th><th>Document</th><th>File</th><th>Date</th><th>Status</th><th>View</th></tr></thead>
+            <tbody id="legalUploadBody">
+              <tr><td>1</td><td>M/s Sawant Infra</td><td>Affidavit (English)</td><td>affidavit_eng.pdf</td><td>10 Jan 2024</td><td><span class="status-badge st-valid">Uploaded</span></td><td><button class="btn-out" style="padding:2px 8px;font-size:.7rem;"><i class="bi bi-eye"></i></button></td></tr>
+              <tr><td>2</td><td>M/s Sawant Infra</td><td>Declaration</td><td>declaration.pdf</td><td>10 Jan 2024</td><td><span class="status-badge st-valid">Uploaded</span></td><td><button class="btn-out" style="padding:2px 8px;font-size:.7rem;"><i class="bi bi-eye"></i></button></td></tr>
+              <tr><td>3</td><td>M/s Desai Construction</td><td>Undertaking (Marathi)</td><td>undertaking_mar.pdf</td><td>15 Feb 2024</td><td><span class="status-badge st-valid">Uploaded</span></td><td><button class="btn-out" style="padding:2px 8px;font-size:.7rem;"><i class="bi bi-eye"></i></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="action-bar">
+          <button class="btn-out" onclick="switchTab(2,document.querySelectorAll('.nav-tab')[2])"><i class="bi bi-arrow-left"></i> Back</button>
+          <button class="btn-gov" onclick="showSaved('sm2')"><i class="bi bi-floppy"></i> Save</button>
+          <span id="sm2" style="font-size:.78rem;color:#16a34a;display:none;"><i class="bi bi-check-circle-fill"></i> Saved!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function switchTab(n,btn){document.querySelectorAll('.tab-panel').forEach((p,i)=>p.classList.toggle('active',i===n));document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+  function filterDocOrg(v){document.querySelectorAll('#docStatusTbl tbody tr').forEach(r=>r.style.display=(!v||r.textContent.includes(v))?'':'none');}
+  function searchDoc(q){q=q.toLowerCase();document.querySelectorAll('#docStatusTbl tbody tr').forEach(r=>r.style.display=r.textContent.toLowerCase().includes(q)?'':'none');}
+  function handleUpload(inp){
+    if(!inp.files[0])return;
+    const tb=document.getElementById('legalUploadBody');
+    const tr=document.createElement('tr');const n=tb.rows.length+1;
+    tr.innerHTML=`<td>${n}</td><td>—</td><td>Uploaded Document</td><td>${inp.files[0].name}</td><td>${new Date().toLocaleDateString('en-IN')}</td><td><span class="status-badge st-valid">Uploaded</span></td><td><button class="btn-out" style="padding:2px 8px;font-size:.7rem;"><i class="bi bi-eye"></i></button></td>`;
+    tb.appendChild(tr);
+  }
+  function showSaved(id){const m=document.getElementById(id);m.style.display='inline';setTimeout(()=>m.style.display='none',3000);}
+</script>
+</body>
+</html>

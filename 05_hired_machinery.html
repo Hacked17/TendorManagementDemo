@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>M6 — Hired Machinery</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+  <style>
+    :root{--gov-blue:#1a3a5c;--gov-mid:#2560a0;--gov-light:#eef4fb;--gov-border:#c5d6ea;--accent:#e8a020;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1e2d3d;display:flex;flex-direction:column;min-height:100vh;}
+    .top-header{background:linear-gradient(135deg,var(--gov-blue),var(--gov-mid));color:#fff;padding:0 1.5rem;height:60px;display:flex;align-items:center;gap:1rem;border-bottom:4px solid var(--accent);position:sticky;top:0;z-index:1000;box-shadow:0 3px 12px rgba(0,0,0,.2);}
+    .top-header .logo{width:40px;height:40px;background:rgba(255,255,255,.15);border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+    .top-header h1{font-size:1rem;font-weight:700;}.top-header p{font-size:.66rem;opacity:.75;text-transform:uppercase;letter-spacing:.05em;}
+    .back-btn{margin-left:auto;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:6px;padding:5px 14px;font-size:.78rem;text-decoration:none;display:flex;align-items:center;gap:.4rem;}
+    .back-btn:hover{background:rgba(255,255,255,.25);color:#fff;}
+    .hamburger{background:none;border:none;color:#fff;font-size:1.3rem;cursor:pointer;display:none;}
+    .body-wrap{display:flex;flex:1;}
+    .sidebar{width:240px;background:var(--gov-blue);flex-shrink:0;display:flex;flex-direction:column;overflow-y:auto;position:sticky;top:60px;height:calc(100vh - 60px);}
+    .sidebar-label{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);padding:10px 16px 3px;}
+    .sidebar-link{display:flex;align-items:center;gap:.6rem;padding:8px 16px;font-size:.8rem;color:rgba(255,255,255,.75);text-decoration:none;border-left:3px solid transparent;transition:all .15s;}
+    .sidebar-link i{font-size:.95rem;opacity:.8;}
+    .sidebar-link:hover{background:rgba(255,255,255,.08);color:#fff;border-left-color:var(--accent);}
+    .sidebar-link.active{background:rgba(255,255,255,.13);color:#fff;border-left-color:var(--accent);font-weight:600;}
+    .sidebar-link .mn{margin-left:auto;background:var(--accent);color:var(--gov-blue);font-size:.62rem;font-weight:700;padding:1px 6px;border-radius:8px;}
+    .sidebar-divider{border-color:rgba(255,255,255,.1);margin:2px 0;}
+    .main{flex:1;padding:1.5rem;overflow-y:auto;}
+    .page-hd{background:#fff;border:1px solid var(--gov-border);border-radius:10px;padding:1rem 1.2rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:1rem;box-shadow:0 2px 8px rgba(26,58,92,.06);}
+    .page-hd .icon{width:46px;height:46px;background:var(--gov-light);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:var(--gov-mid);border:1px solid var(--gov-border);}
+    .page-hd h2{font-size:1.05rem;font-weight:700;color:var(--gov-blue);margin-bottom:2px;}.page-hd p{font-size:.74rem;color:#6b8aaa;margin:0;}
+    .nav-tabs-gov{border-bottom:2px solid var(--gov-border);margin-bottom:1.2rem;display:flex;gap:0;overflow-x:auto;}
+    .nav-tab{padding:.55rem 1.1rem;font-size:.78rem;font-weight:600;color:#6b8aaa;border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:all .15s;display:flex;align-items:center;gap:.35rem;}
+    .nav-tab:hover{color:var(--gov-blue);}.nav-tab.active{color:var(--gov-blue);border-bottom-color:var(--accent);}
+    .tab-panel{display:none;}.tab-panel.active{display:block;}
+    .card-gov{background:#fff;border:1px solid var(--gov-border);border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(26,58,92,.06);margin-bottom:1.2rem;}
+    .card-hd{background:var(--gov-light);border-bottom:1px solid var(--gov-border);padding:.6rem 1rem;font-size:.74rem;font-weight:700;color:var(--gov-blue);text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;justify-content:space-between;gap:.4rem;}
+    .card-hd i{color:var(--accent);}.card-body-p{padding:1rem;}
+    .sec-lbl{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gov-mid);margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem;}
+    .sec-lbl::after{content:'';flex:1;height:1px;background:var(--gov-border);}
+    .tbl{width:100%;border-collapse:collapse;}
+    .tbl th{background:var(--gov-blue);color:#fff;font-size:.7rem;font-weight:600;padding:8px 10px;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;}
+    .tbl td{padding:7px 10px;font-size:.82rem;border-bottom:1px solid #e8eef5;vertical-align:middle;}
+    .tbl tr:last-child td{border-bottom:none;}.tbl tr:nth-child(even) td{background:#f7fafd;}.tbl tr:hover td{background:#ebf3fb;}
+    .form-label{font-size:.72rem;font-weight:600;color:#4a6180;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem;}
+    .form-control,.form-select{border:1.5px solid var(--gov-border);border-radius:6px;font-size:.85rem;}
+    .form-control:focus,.form-select:focus{border-color:var(--gov-mid);box-shadow:0 0 0 3px rgba(37,96,160,.1);}
+    .btn-gov{background:var(--gov-blue);color:#fff;border:none;border-radius:6px;padding:.45rem 1.2rem;font-size:.82rem;font-weight:600;cursor:pointer;}
+    .btn-gov:hover{background:var(--gov-mid);}
+    .btn-out{background:transparent;color:var(--gov-blue);border:1.5px solid var(--gov-border);border-radius:6px;padding:.45rem 1.1rem;font-size:.82rem;font-weight:600;cursor:pointer;}
+    .btn-out:hover{background:var(--gov-blue);color:#fff;border-color:var(--gov-blue);}
+    .btn-acc{background:var(--accent);color:var(--gov-blue);border:none;border-radius:6px;padding:.45rem 1.2rem;font-size:.82rem;font-weight:700;cursor:pointer;}
+    .btn-sm-red{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5;border-radius:4px;padding:2px 8px;font-size:.7rem;cursor:pointer;}
+    .action-bar{background:#fff;border-top:1px solid var(--gov-border);padding:.85rem 1.2rem;display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;}
+    .status-badge{display:inline-block;padding:2px 9px;border-radius:4px;font-size:.7rem;font-weight:700;}
+    .st-valid{background:#dcfce7;color:#166534;}.st-pending{background:#fef9c3;color:#854d0e;}.st-na{background:#f1f5f9;color:#64748b;}
+    .mach-row{background:var(--gov-light);border:1px solid var(--gov-border);border-radius:8px;padding:.85rem 1rem;margin-bottom:.7rem;position:relative;}
+    .mach-row .row-num{position:absolute;top:.6rem;right:.75rem;font-size:.62rem;font-weight:700;background:var(--gov-blue);color:#fff;padding:1px 6px;border-radius:4px;}
+    .upload-zone{border:2px dashed var(--gov-border);border-radius:8px;padding:1.2rem;text-align:center;cursor:pointer;background:var(--gov-light);}
+    .upload-zone:hover{border-color:var(--gov-mid);background:#dbeafe;}
+    .upload-zone i{font-size:1.8rem;color:var(--gov-mid);display:block;margin-bottom:.3rem;}
+    .upload-zone p{font-size:.78rem;color:#6b8aaa;margin:0;}
+    @media(max-width:991px){.sidebar{display:none;position:fixed;top:60px;left:0;height:calc(100vh - 60px);z-index:999;}.sidebar.open{display:flex;}.hamburger{display:block;}}
+  </style>
+</head>
+<body>
+<header class="top-header">
+  <button class="hamburger" onclick="document.getElementById('sb').classList.toggle('open')"><i class="bi bi-list"></i></button>
+  <div class="logo"><i class="bi bi-building-fill-gear"></i></div>
+  <div><h1>Module 6 — Hired Machinery Owner Info</h1><p>Agency Documents · e-Tender Management System</p></div>
+  <a href="00_dashboard.html" class="back-btn"><i class="bi bi-arrow-left"></i> Dashboard</a>
+</header>
+<div class="body-wrap">
+  <nav class="sidebar" id="sb">
+    <div style="padding:8px 0 4px;">
+      <div class="sidebar-label">Master Data</div>
+      <a class="sidebar-link" href="01_organization_info.html"><i class="bi bi-diagram-3-fill"></i> Organisation Info <span class="mn">M1</span></a>
+      <a class="sidebar-link" href="02_registration_info.html"><i class="bi bi-person-badge-fill"></i> Registration Info <span class="mn">M2</span></a>
+      <a class="sidebar-link" href="03_agency_info.html"><i class="bi bi-buildings-fill"></i> Agency Information <span class="mn">M4</span></a>
+    </div>
+    <hr class="sidebar-divider"/>
+    <div style="padding:4px 0;">
+      <div class="sidebar-label">Agency Documents</div>
+      <a class="sidebar-link" href="04_legal_documents.html"><i class="bi bi-file-earmark-lock2-fill"></i> Legal Documents <span class="mn">M5</span></a>
+      <a class="sidebar-link active" href="05_hired_machinery.html"><i class="bi bi-truck-front-fill"></i> Hired Machinery <span class="mn">M6</span></a>
+      <a class="sidebar-link" href="06_qualifying_docs.html"><i class="bi bi-patch-check-fill"></i> Qualifying Docs <span class="mn">M7</span></a>
+    </div>
+    <hr class="sidebar-divider"/>
+    <div style="padding:4px 0;">
+      <div class="sidebar-label">Tender Process</div>
+      <a class="sidebar-link" href="07_tender_information.html"><i class="bi bi-newspaper"></i> Published Tender <span class="mn">M8</span></a>
+      <a class="sidebar-link" href="08_checklist.html"><i class="bi bi-clipboard2-check-fill"></i> Checklist <span class="mn">M9</span></a>
+      <a class="sidebar-link" href="09_agency_selection.html"><i class="bi bi-person-check-fill"></i> Agency Selection <span class="mn">M10</span></a>
+    </div>
+    <hr class="sidebar-divider"/>
+    <div style="padding:4px 0;">
+      <div class="sidebar-label">Post-Tender</div>
+      <a class="sidebar-link" href="10_after_submission.html"><i class="bi bi-send-fill"></i> After Submission <span class="mn">M12</span></a>
+      <a class="sidebar-link" href="11_status_bid.html"><i class="bi bi-bar-chart-fill"></i> Status of Bid <span class="mn">M13</span></a>
+      <a class="sidebar-link" href="12_status_emd.html"><i class="bi bi-bank2"></i> Status of EMD <span class="mn">M14</span></a>
+      <a class="sidebar-link" href="13_reports.html"><i class="bi bi-file-bar-graph-fill"></i> Reports <span class="mn">M15</span></a>
+    </div>
+    <hr class="sidebar-divider"/>
+    <a class="sidebar-link" href="00_dashboard.html"><i class="bi bi-house-fill"></i> Dashboard</a>
+  </nav>
+
+  <main class="main">
+    <div class="page-hd">
+      <div class="icon"><i class="bi bi-truck-front-fill"></i></div>
+      <div><h2>Hired Machinery Owner Information &nbsp;<span style="background:#f3e8ff;color:#6b21a8;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:4px;">M6</span></h2>
+      <p>Owner details, machinery list, hire agreement data entry and document upload for all agencies.</p></div>
+      <div class="ms-auto"><button class="btn-acc" onclick="switchTab(1,document.querySelectorAll('.nav-tab')[1])"><i class="bi bi-plus-lg"></i> Add Machinery</button></div>
+    </div>
+
+    <div class="nav-tabs-gov">
+      <button class="nav-tab active" onclick="switchTab(0,this)"><i class="bi bi-table"></i> Machinery List</button>
+      <button class="nav-tab" onclick="switchTab(1,this)"><i class="bi bi-person-fill"></i> Owner &amp; Machinery Details</button>
+      <button class="nav-tab" onclick="switchTab(2,this)"><i class="bi bi-pen"></i> Hire Agreement</button>
+      <button class="nav-tab" onclick="switchTab(3,this)"><i class="bi bi-file-earmark-arrow-up"></i> Upload Documents</button>
+    </div>
+
+    <!-- TAB 0: MACHINERY LIST -->
+    <div class="tab-panel active" id="tp0">
+      <div class="card-gov">
+        <div class="card-hd">
+          <span><i class="bi bi-truck"></i> All Hired Machinery Records</span>
+          <div class="d-flex gap-2">
+            <select class="form-select form-select-sm" style="width:auto;font-size:.75rem;" onchange="filterMach(this.value)">
+              <option value="">All Agencies</option><option>M/s Sawant Infra</option><option>M/s Desai Construction</option><option>M/s Kulkarni &amp; Associates</option>
+            </select>
+            <input class="form-control form-control-sm" style="width:150px;font-size:.75rem;" placeholder="Search…" oninput="searchMach(this.value)"/>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="tbl" id="machTbl">
+            <thead><tr><th>#</th><th>Agency</th><th>Owner Name</th><th>Machinery Type</th><th>Make / Model</th><th>Year</th><th>Reg. No.</th><th>Hire Rate (₹/Day)</th><th>Agreement</th><th>Action</th></tr></thead>
+            <tbody id="machBody">
+              <tr data-agency="M/s Sawant Infra"><td>1</td><td>M/s Sawant Infra</td><td>Sunil Mapare</td><td>JCB Excavator</td><td>JCB 3CX / 2019</td><td>2019</td><td>MH-08-AB-1234</td><td>₹5,500</td><td><span class="status-badge st-valid">Signed</span></td><td><div class="d-flex gap-1"><button class="btn-out" style="padding:2px 8px;font-size:.7rem;"><i class="bi bi-eye"></i></button><button class="btn-out" style="padding:2px 8px;font-size:.7rem;"><i class="bi bi-pencil"></i></button></div></td></tr>
+              <tr data-agency="M/s Sawant Infra"><td>2</td><td>M/s Sawant Infra</td><td>Sunil Mapare</td><td>Dumper Truck</td><td>Tata 2518 / 2020</td><td>2020</td><td>MH-08-CD-5678</td><td>₹4,200</td><td><span class="status-badge st-valid">Signed</span></td><td><div class="d-flex gap-1"><button class="btn-out" style="padding:2px 8px;font-size:.7rem;"><i class="bi bi-eye"></i></button><button class="btn-out" style="padding:2px 8px;font-size:.7rem;"><i class="bi bi-pencil"></i></button></div></td></tr>
+              <tr data-agency="M/s Desai Construction"><td>3</td><td>M/s Desai Construction</td><td>Prakash Rane</td><td>Concrete Mixer</td><td>Ajax / 2018</td><td>2018</td><td>MH-08-EF-9012</td><td>₹1,800</td><td><span class="status-badge st-pending">Pending</span></td><td><div class="d-flex gap-1"><button class="btn-out" style="padding:2px 8px;font-size:.7rem;"><i class="bi bi-eye"></i></button><button class="btn-out" style="padding:2px 8px;font-size:.7rem;"><i class="bi bi-pencil"></i></button></div></td></tr>
+              <tr data-agency="M/s Kulkarni &amp; Associates"><td>4</td><td>M/s Kulkarni &amp; Associates</td><td>Dinesh Kadam</td><td>Road Roller</td><td>L&amp;T / 2021</td><td>2021</td><td>MH-08-GH-3456</td><td>₹6,000</td><td><span class="status-badge st-valid">Signed</span></td><td><div class="d-flex gap-1"><button class="btn-out" style="padding:2px 8px;font-size:.7rem;"><i class="bi bi-eye"></i></button><button class="btn-out" style="padding:2px 8px;font-size:.7rem;"><i class="bi bi-pencil"></i></button></div></td></tr>
+              <tr data-agency="M/s Kulkarni &amp; Associates"><td>5</td><td>M/s Kulkarni &amp; Associates</td><td>Dinesh Kadam</td><td>Paver Machine</td><td>Wirtgen / 2022</td><td>2022</td><td>MH-08-IJ-7890</td><td>₹12,000</td><td><span class="status-badge st-valid">Signed</span></td><td><div class="d-flex gap-1"><button class="btn-out" style="padding:2px 8px;font-size:.7rem;"><i class="bi bi-eye"></i></button><button class="btn-out" style="padding:2px 8px;font-size:.7rem;"><i class="bi bi-pencil"></i></button></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="action-bar"><span style="font-size:.74rem;color:#6b8aaa;">Total <strong id="machCount">5</strong> machinery records</span><button class="btn-gov ms-auto"><i class="bi bi-download"></i> Export</button></div>
+      </div>
+    </div>
+
+    <!-- TAB 1: OWNER & MACHINERY DETAILS -->
+    <div class="tab-panel" id="tp1">
+      <div class="card-gov">
+        <div class="card-hd"><span><i class="bi bi-person-fill"></i> Machinery Owner Details</span></div>
+        <div class="card-body-p">
+          <div class="sec-lbl"><i class="bi bi-building"></i> Link to Agency</div>
+          <div class="row g-3 mb-3">
+            <div class="col-md-4"><label class="form-label">Select Agency</label><select class="form-select"><option value="">-- Select Agency --</option><option>M/s Sawant Infra Pvt Ltd</option><option>M/s Desai Construction</option><option>M/s Patil Builders</option><option>M/s Kulkarni &amp; Associates</option></select></div>
+            <div class="col-md-4"><label class="form-label">Tender ID (if for specific tender)</label><input class="form-control" placeholder="e.g. TID-2024-087"/></div>
+            <div class="col-md-4"><label class="form-label">Organisation</label><select class="form-select"><option>PWD</option><option>ZP</option><option>MIDC</option><option>Tribal</option><option>Irrigation</option><option>NH</option></select></div>
+          </div>
+
+          <div class="sec-lbl"><i class="bi bi-person-vcard"></i> Owner Information</div>
+          <div class="row g-3 mb-3">
+            <div class="col-md-3"><label class="form-label">Owner Full Name</label><input class="form-control" placeholder="Full name"/></div>
+            <div class="col-md-3"><label class="form-label">Owner Mobile</label><input class="form-control" type="tel" placeholder="+91"/></div>
+            <div class="col-md-3"><label class="form-label">PAN Number</label><input class="form-control" placeholder="ABCDE1234F"/></div>
+            <div class="col-md-3"><label class="form-label">Aadhar Number</label><input class="form-control" placeholder="XXXX XXXX XXXX"/></div>
+            <div class="col-12"><label class="form-label">Owner Address</label><textarea class="form-control" rows="2" placeholder="Full address of machinery owner"></textarea></div>
+          </div>
+
+          <div class="sec-lbl d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-truck"></i> Machinery List</span>
+            <button class="btn-acc" style="font-size:.73rem;padding:.3rem .8rem;" onclick="addMachRow()"><i class="bi bi-plus-lg"></i> Add Machinery</button>
+          </div>
+          <div id="machList">
+            <div class="mach-row">
+              <span class="row-num">1</span>
+              <div class="row g-2">
+                <div class="col-md-3"><label class="form-label">Machinery Type</label>
+                  <select class="form-select form-select-sm">
+                    <option>-- Select --</option><option>JCB Excavator</option><option>Dumper Truck</option><option>Concrete Mixer</option><option>Road Roller</option><option>Paver Machine</option><option>Tipper</option><option>Crane</option><option>Compactor</option><option>Batching Plant</option><option>Water Tanker</option><option>Generator</option><option>Other</option>
+                  </select>
+                </div>
+                <div class="col-md-2"><label class="form-label">Make / Brand</label><input class="form-control form-control-sm" placeholder="e.g. JCB, Tata"/></div>
+                <div class="col-md-2"><label class="form-label">Model</label><input class="form-control form-control-sm" placeholder="Model"/></div>
+                <div class="col-md-1"><label class="form-label">Year</label><input class="form-control form-control-sm" placeholder="YYYY"/></div>
+                <div class="col-md-2"><label class="form-label">Reg. No.</label><input class="form-control form-control-sm" placeholder="MH-XX-XX-XXXX"/></div>
+                <div class="col-md-2"><label class="form-label">Hire Rate (₹/Day)</label><input class="form-control form-control-sm" placeholder="e.g. 5500"/></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="action-bar">
+          <button class="btn-out"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+          <button class="btn-gov" onclick="showSaved('sm1')"><i class="bi bi-floppy"></i> Save Owner &amp; Machinery</button>
+          <span id="sm1" style="font-size:.78rem;color:#16a34a;display:none;"><i class="bi bi-check-circle-fill"></i> Saved!</span>
+          <button class="btn-acc ms-auto" onclick="switchTab(2,document.querySelectorAll('.nav-tab')[2])">Next: Agreement <i class="bi bi-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: HIRE AGREEMENT -->
+    <div class="tab-panel" id="tp2">
+      <div class="card-gov">
+        <div class="card-hd"><span><i class="bi bi-pen"></i> Machinery Hire Agreement Details</span></div>
+        <div class="card-body-p">
+          <div class="row g-3 mb-3">
+            <div class="col-md-4"><label class="form-label">Select Agency</label><select class="form-select"><option value="">-- Select Agency --</option><option>M/s Sawant Infra Pvt Ltd</option><option>M/s Desai Construction</option><option>M/s Patil Builders</option></select></div>
+            <div class="col-md-4"><label class="form-label">Owner Name</label><input class="form-control" placeholder="Machinery owner name"/></div>
+            <div class="col-md-4"><label class="form-label">Agreement Date</label><input class="form-control" type="date"/></div>
+            <div class="col-md-4"><label class="form-label">Stamp Paper Value (₹)</label><input class="form-control" placeholder="e.g. 500"/></div>
+            <div class="col-md-4"><label class="form-label">Notary Name</label><input class="form-control" placeholder="Notary full name"/></div>
+            <div class="col-md-4"><label class="form-label">Notary Reg. No.</label><input class="form-control" placeholder="Registration number"/></div>
+            <div class="col-md-4"><label class="form-label">Agreement Valid From</label><input class="form-control" type="date"/></div>
+            <div class="col-md-4"><label class="form-label">Agreement Valid Upto</label><input class="form-control" type="date"/></div>
+            <div class="col-md-4"><label class="form-label">Total Hire Amount (₹)</label><input class="form-control" placeholder="e.g. 2,00,000"/></div>
+            <div class="col-md-4"><label class="form-label">Payment Terms</label><select class="form-select"><option>Weekly</option><option>Monthly</option><option>On completion</option><option>As per work done</option></select></div>
+            <div class="col-md-4"><label class="form-label">Hiring Duration</label><input class="form-control" placeholder="e.g. 6 months"/></div>
+            <div class="col-md-4"><label class="form-label">Security Deposit (₹)</label><input class="form-control" placeholder="e.g. 10,000"/></div>
+            <div class="col-12"><label class="form-label">Special Conditions</label><textarea class="form-control" rows="3" placeholder="Any special terms and conditions for this hire agreement…"></textarea></div>
+          </div>
+
+          <div class="sec-lbl"><i class="bi bi-truck"></i> Machinery Covered in this Agreement</div>
+          <div style="overflow-x:auto;">
+            <table class="tbl" id="agreeMachTbl">
+              <thead><tr><th>#</th><th>Machinery Type</th><th>Reg. No.</th><th>Daily Rate (₹)</th><th>Qty</th><th>Subtotal (₹)</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td><input class="form-control form-control-sm" placeholder="Type"/></td><td><input class="form-control form-control-sm" placeholder="Reg. no."/></td><td><input class="form-control form-control-sm" type="number" placeholder="0" oninput="calcRow(this)"/></td><td><input class="form-control form-control-sm" type="number" placeholder="1" oninput="calcRow(this)"/></td><td><span class="subtotal">₹0</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <button class="btn-out mt-2" style="font-size:.78rem;padding:.3rem .9rem;" onclick="addAgreeRow()"><i class="bi bi-plus-lg"></i> Add Row</button>
+        </div>
+        <div class="action-bar">
+          <button class="btn-out" onclick="switchTab(1,document.querySelectorAll('.nav-tab')[1])"><i class="bi bi-arrow-left"></i> Back</button>
+          <button class="btn-gov" onclick="showSaved('sm2')"><i class="bi bi-floppy"></i> Save Agreement</button>
+          <span id="sm2" style="font-size:.78rem;color:#16a34a;display:none;"><i class="bi bi-check-circle-fill"></i> Saved!</span>
+          <button class="btn-acc ms-auto" onclick="switchTab(3,document.querySelectorAll('.nav-tab')[3])">Upload Docs <i class="bi bi-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: UPLOAD DOCUMENTS -->
+    <div class="tab-panel" id="tp3">
+      <div class="card-gov">
+        <div class="card-hd"><span><i class="bi bi-file-earmark-arrow-up"></i> Upload Machinery Documents</span></div>
+        <div class="card-body-p">
+          <div class="row g-3 mb-3">
+            <div class="col-md-4"><label class="form-label">Select Agency</label><select class="form-select"><option value="">-- Select Agency --</option><option>M/s Sawant Infra Pvt Ltd</option><option>M/s Desai Construction</option></select></div>
+            <div class="col-md-4"><label class="form-label">Document Type</label>
+              <select class="form-select">
+                <option>-- Select --</option>
+                <option>Machinery Hire Agreement (Signed)</option>
+                <option>Vehicle Registration Certificate</option>
+                <option>Insurance Certificate</option>
+                <option>Fitness Certificate</option>
+                <option>Owner ID Proof</option>
+                <option>Owner PAN Card</option>
+                <option>Bank Passbook / Cheque</option>
+                <option>Photo of Machinery</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="col-md-4"><label class="form-label">Machinery Reg. No.</label><input class="form-control" placeholder="e.g. MH-08-AB-1234"/></div>
+          </div>
+          <div class="upload-zone mb-3" onclick="document.getElementById('machFile').click()">
+            <i class="bi bi-cloud-arrow-up-fill"></i>
+            <p><strong>Click to upload</strong> — PDF, JPG, PNG — Max 5MB</p>
+            <input type="file" id="machFile" style="display:none;" accept=".pdf,.jpg,.jpeg,.png" onchange="handleMachUpload(this)"/>
+          </div>
+          <div class="sec-lbl"><i class="bi bi-folder2-open"></i> Uploaded Machinery Documents</div>
+          <table class="tbl">
+            <thead><tr><th>#</th><th>Agency</th><th>Document</th><th>Machinery</th><th>File</th><th>Date</th><th>Action</th></tr></thead>
+            <tbody id="machUploadBody">
+              <tr><td>1</td><td>M/s Sawant Infra</td><td>Hire Agreement</td><td>MH-08-AB-1234</td><td>hire_agr_sawant.pdf</td><td>12 Jan 2024</td><td><button class="btn-out" style="padding:2px 8px;font-size:.7rem;"><i class="bi bi-eye"></i></button></td></tr>
+              <tr><td>2</td><td>M/s Sawant Infra</td><td>RC Book</td><td>MH-08-AB-1234</td><td>rc_jcb.pdf</td><td>12 Jan 2024</td><td><button class="btn-out" style="padding:2px 8px;font-size:.7rem;"><i class="bi bi-eye"></i></button></td></tr>
+              <tr><td>3</td><td>M/s Kulkarni &amp; Associates</td><td>Insurance Cert.</td><td>MH-08-GH-3456</td><td>insurance_roller.pdf</td><td>05 Mar 2024</td><td><button class="btn-out" style="padding:2px 8px;font-size:.7rem;"><i class="bi bi-eye"></i></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="action-bar">
+          <button class="btn-out" onclick="switchTab(2,document.querySelectorAll('.nav-tab')[2])"><i class="bi bi-arrow-left"></i> Back</button>
+          <button class="btn-gov" onclick="showSaved('sm3')"><i class="bi bi-floppy"></i> Save &amp; Finish</button>
+          <span id="sm3" style="font-size:.78rem;color:#16a34a;display:none;"><i class="bi bi-check-circle-fill"></i> Record complete!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function switchTab(n,btn){document.querySelectorAll('.tab-panel').forEach((p,i)=>p.classList.toggle('active',i===n));document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+  function filterMach(v){document.querySelectorAll('#machBody tr').forEach(r=>r.style.display=(!v||r.dataset.agency===v)?'':'none');}
+  function searchMach(q){q=q.toLowerCase();document.querySelectorAll('#machBody tr').forEach(r=>r.style.display=r.textContent.toLowerCase().includes(q)?'':'none');}
+  let machRowCount=1;
+  function addMachRow(){
+    machRowCount++;
+    const div=document.createElement('div');div.className='mach-row';
+    div.innerHTML=`<span class="row-num">${machRowCount}</span><div class="row g-2"><div class="col-md-3"><label class="form-label">Machinery Type</label><select class="form-select form-select-sm"><option>JCB Excavator</option><option>Dumper Truck</option><option>Concrete Mixer</option><option>Road Roller</option><option>Paver Machine</option><option>Tipper</option><option>Crane</option><option>Compactor</option><option>Other</option></select></div><div class="col-md-2"><label class="form-label">Make</label><input class="form-control form-control-sm" placeholder="Make"/></div><div class="col-md-2"><label class="form-label">Model</label><input class="form-control form-control-sm" placeholder="Model"/></div><div class="col-md-1"><label class="form-label">Year</label><input class="form-control form-control-sm" placeholder="YYYY"/></div><div class="col-md-2"><label class="form-label">Reg. No.</label><input class="form-control form-control-sm" placeholder="MH-XX-XX-XXXX"/></div><div class="col-md-1"><label class="form-label">Rate</label><input class="form-control form-control-sm" placeholder="₹/Day"/></div><div class="col-md-1 d-flex align-items-end"><button class="btn-sm-red w-100" onclick="this.closest('.mach-row').remove()"><i class="bi bi-trash"></i></button></div></div>`;
+    document.getElementById('machList').appendChild(div);
+  }
+  function addAgreeRow(){
+    const tb=document.getElementById('agreeMachTbl').querySelector('tbody');
+    const tr=document.createElement('tr');const n=tb.rows.length+1;
+    tr.innerHTML=`<td>${n}</td><td><input class="form-control form-control-sm" placeholder="Type"/></td><td><input class="form-control form-control-sm" placeholder="Reg. no."/></td><td><input class="form-control form-control-sm" type="number" placeholder="0" oninput="calcRow(this)"/></td><td><input class="form-control form-control-sm" type="number" placeholder="1" oninput="calcRow(this)"/></td><td><span class="subtotal">₹0</span></td>`;
+    tb.appendChild(tr);
+  }
+  function calcRow(inp){const row=inp.closest('tr');const cells=row.querySelectorAll('input[type=number]');const rate=parseFloat(cells[0].value)||0;const qty=parseFloat(cells[1].value)||0;row.querySelector('.subtotal').textContent='₹'+(rate*qty).toLocaleString('en-IN');}
+  function handleMachUpload(inp){if(!inp.files[0])return;const tb=document.getElementById('machUploadBody');const tr=document.createElement('tr');const n=tb.rows.length+1;tr.innerHTML=`<td>${n}</td><td>—</td><td>Uploaded Doc</td><td>—</td><td>${inp.files[0].name}</td><td>${new Date().toLocaleDateString('en-IN')}</td><td><button class="btn-out" style="padding:2px 8px;font-size:.7rem;"><i class="bi bi-eye"></i></button></td>`;tb.appendChild(tr);}
+  function showSaved(id){const m=document.getElementById(id);m.style.display='inline';setTimeout(()=>m.style.display='none',3000);}
+</script>
+</body>
+</html>
